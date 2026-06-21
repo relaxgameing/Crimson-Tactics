@@ -1,12 +1,25 @@
-using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.LowLevelPhysics2D;
 
 public class GameModeController : MonoBehaviour {
+    private static GameModeController _instance;
+
+    // Lazy initialization
+    public static GameModeController Instance {
+        get {
+            if (_instance is null) {
+                // Try to find existing instance in scene
+                _instance = FindObjectOfType<GameModeController>();
+
+                // If still not found, create a new GameObject
+                if (_instance is null) {
+                    GameObject obj = new GameObject("GameModeController");
+                    _instance = obj.AddComponent<GameModeController>();
+                    DontDestroyOnLoad(obj);
+                }
+            }
+            return _instance;
+        }
+    }
 
     private TileManager _selectedTile;
     void Start()
@@ -14,13 +27,4 @@ public class GameModeController : MonoBehaviour {
         Debug.Log("Game Started");
     }
 
-    private void Update() {
-        Vector2Control curPos = Mouse.current.position;
-        Ray ray = Camera.main.ScreenPointToRay(curPos.ReadValue());
-        if (Physics.Raycast(ray , out RaycastHit hit, 100 , LayerMask.GetMask("Tile"))) {
-            GameObject obj = hit.collider.gameObject;
-            obj.GetComponent<TileManager>().SetSelection(true);
-            Debug.Log("hit " + obj.name);
-        }
-    }
 }

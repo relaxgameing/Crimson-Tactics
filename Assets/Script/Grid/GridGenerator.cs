@@ -2,10 +2,19 @@ using System;
 using UnityEngine;
 
 public class GridGenerator : MonoBehaviour {
-    [SerializeField] private int gridRows = 10 ;
-    [SerializeField] private int gridCols = 10;
+    [SerializeField] private int gridRows = 2 ;
+    [SerializeField] private int gridCols = 2;
     [SerializeField] private int gridSize = 1;
     [SerializeField] private GameObject defaultTile;
+
+    // returns grid cell number for a particular world position
+    // Note: functino Ignores Height
+    // could use scriptable objects for the gridSize handling
+    public static Vector2 CellNumber(Vector3 worldPos , float gridSize = 1 ) {
+        return new Vector2(
+            Mathf.FloorToInt(worldPos.x) / gridSize,
+            Mathf.FloorToInt(worldPos.z) / gridSize);
+    }
 
 
     public void Generate() {

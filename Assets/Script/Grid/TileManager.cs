@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class TileManager : MonoBehaviour {
+public class TileManager : MonoBehaviour , IPointerEnterHandler,
+IPointerExitHandler{
 
     private Outline _outlineComponent;
     private bool _isSelected = false;
@@ -10,29 +12,12 @@ public class TileManager : MonoBehaviour {
         _outlineComponent = GetComponent<Outline>();
     }
 
-    private void Selected() {
-        Debug.Log("Mouse Enter");
-        var pos = transform.position;
-        pos.y += 0.2f;
-        transform.SetPositionAndRotation(pos , transform.rotation);
+    public void OnPointerEnter(PointerEventData eventData) {
+        Debug.Log("Tile Selected " + GridGenerator.CellNumber(transform.position ));
         _outlineComponent.enabled = true;
     }
-
-    private void NotSelected() {
-        Debug.Log("Mouse Exit");
-        var pos = transform.position;
-        pos.y -= 0.2f;
-        transform.SetPositionAndRotation(pos , transform.rotation);
+    public void OnPointerExit(PointerEventData eventData) {
+        Debug.Log("Tile UnSelected");
         _outlineComponent.enabled = false;
-    }
-
-    public void SetSelection(bool isSelected) {
-        _isSelected = isSelected;
-
-        if (isSelected) {
-            Selected();
-        }else {
-            NotSelected();
-        }
     }
 }
