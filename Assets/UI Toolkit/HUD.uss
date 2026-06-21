@@ -1,0 +1,14 @@
+:root {
+}
+
+.unity-label {
+    font-size: 32%;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    -unity-text-auto-size: best-fit 10px 100px;
+    -unity-text-generator: advanced;
+    width: 10%;
+    height: 10%;
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=38adee3b21358478c9095314bbbede6f&type=3#NotInter-Regular");
+    -unity-font-style: bold;
+}

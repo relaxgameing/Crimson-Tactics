@@ -1,3 +1,4 @@
+using Unity.Properties;
 using UnityEngine;
 
 public class GameModeController : MonoBehaviour {
@@ -21,10 +22,14 @@ public class GameModeController : MonoBehaviour {
         }
     }
 
-    private TileManager _selectedTile;
+    [CreateProperty]
+    public  TileManager SelectedTile { get; private set; }
     void Start()
     {
         Debug.Log("Game Started");
     }
 
+    public void SetSelectedTile(TileManager newTile) {
+        SelectedTile = newTile;
+    }
 }
