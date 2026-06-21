@@ -16,6 +16,15 @@ public class GridGenerator : MonoBehaviour {
             Mathf.FloorToInt(worldPos.z) / gridSize);
     }
 
+    private void NormalizeTile() {
+        var renderer = defaultTile.GetComponent<MeshRenderer>();
+        float xScale = gridSize / renderer.bounds.size.x;
+        float yScale = gridSize / renderer.bounds.size.y;
+
+        defaultTile.transform.localScale.Set(xScale , yScale , xScale);
+        defaultTile.tag = TagHandle.GetExistingTag("Tile").ToString();
+    }
+
 
     public void Generate() {
         Clear();
@@ -30,6 +39,7 @@ public class GridGenerator : MonoBehaviour {
                 var spawnedTile = Instantiate(defaultTile , transform);
                 spawnedTile.transform.SetPositionAndRotation(pos , Quaternion.identity);
                 spawnedTile.name = $"cell_{i}_{j}";
+                spawnedTile.tag = TagHandle.GetExistingTag("Tile").ToString();
             }
         }
     }

@@ -15,13 +15,11 @@ IPointerExitHandler{
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        Debug.Log("Tile Selected " + GridGenerator.CellNumber(transform.position ));
         _outlineComponent.enabled = true;
         GameModeController.Instance.SetSelectedTile(this);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        Debug.Log("Tile UnSelected");
         _outlineComponent.enabled = false;
         if (GameModeController.Instance.SelectedTile == this) {
             GameModeController.Instance.SetSelectedTile(null);
