@@ -1,8 +1,9 @@
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
-public static class UIConvertor {
+public static class TypeConvertor {
 
     [InitializeOnLoadMethod]
     public static void RegisterEditorConverters() {
@@ -17,5 +18,9 @@ public static class UIConvertor {
         }
 
         return $"( {tile.CellNo.x},{tile.CellNo.y} )";
+    }
+
+    public static Vector2Int Vector2ToVector2Int(Vector2 a) {
+        return new Vector2Int((int)a.x, (int)a.y);
     }
 }

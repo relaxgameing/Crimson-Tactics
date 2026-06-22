@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,9 +9,10 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     private GameObject _objectOnTileInstance;
     private Outline _outlineComponent;
 
+    private bool _isHighLighted = false;
     public bool IsOccupied => !_objectOnTileInstance.IsUnityNull();
 
-    public Vector2 CellNo => GridSystem.CellNumber(this.transform.position);
+    public Vector2 CellNo => GridSystem.Instance.CellNumber(this.transform.position);
 
     private void OnEnable() {
         _outlineComponent = GetComponent<Outline>();
@@ -22,10 +24,18 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        _outlineComponent.enabled = false;
+        if (!_isHighLighted) {
+            _outlineComponent.enabled = false;
+        }
         if (GameModeController.Instance.SelectedTile == this) {
             GameModeController.Instance.SetSelectedTile(null);
         }
+    }
+
+    public void HighLightTile(bool val , Color color ) {
+        _isHighLighted = val;
+        _outlineComponent.enabled = val;
+        _outlineComponent.OutlineColor = color;
     }
 
     public void SetObjectOnTile(GameObject obj) {

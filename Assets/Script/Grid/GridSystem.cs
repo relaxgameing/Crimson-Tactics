@@ -6,6 +6,8 @@ using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 public class GridSystem : MonoBehaviour {
+    private static GridSystem _instance;
+
     [SerializeField] private int gridRows = 2;
     [SerializeField] private int gridCols = 2;
     [SerializeField] private int gridSize = 1;
@@ -22,16 +24,35 @@ public class GridSystem : MonoBehaviour {
 
     public Vector2 GridDimension => new Vector2(gridRows, gridCols);
 
+    public static GridSystem Instance {
+        get {
+            if (_instance is null) {
+                // Try to find existing instance in scene
+                _instance = FindObjectOfType<GridSystem>();
+
+                // If still not found, create a new GameObject
+                if (_instance is null) {
+                    GameObject obj = new("GridSystem");
+                    _instance = obj.AddComponent<GridSystem>();
+                    DontDestroyOnLoad(obj);
+                }
+            }
+
+            return _instance;
+        }
+    }
+
+    #region Utils
+
     // returns grid cell number for a particular world position
     // Note: functino Ignores Height
     // could use scriptable objects for the gridSize handling
-    public static Vector2 CellNumber(Vector3 worldPos, float gridSize = 1) {
-        return new Vector2(
+    public Vector2Int CellNumber(Vector3 worldPos) {
+        return new Vector2Int(
             Mathf.FloorToInt(worldPos.x) / gridSize,
             Mathf.FloorToInt(worldPos.z) / gridSize);
     }
 
-    #region Utils
 
     public bool CellWithInGrid(Vector2 cellNo) {
         if (cellNo.y < 0 || cellNo.y >= gridCols) {
@@ -50,6 +71,11 @@ public class GridSystem : MonoBehaviour {
     public GameObject GetTileFromCellNumber(Vector2 cellNo) {
         return _tiles[(int)(cellNo.x * gridRows + cellNo.y)];
     }
+
+    int CityBlockDist(Vector2 a, Vector2 b) {
+        return (int)Mathf.Abs(a.x - b.x) + (int)Mathf.Abs(a.y - b.y);
+    }
+
     #endregion
 
 
@@ -141,9 +167,7 @@ public class GridSystem : MonoBehaviour {
         }
     }
 
-    int CityBlockDist(Vector2 a, Vector2 b) {
-        return (int)Mathf.Abs(a.x - b.x) + (int)Mathf.Abs(a.y - b.y);
-    }
+
 
     // find the shortest path between cell coord A to B using A* Algo
     // using city block distance

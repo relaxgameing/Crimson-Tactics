@@ -67,7 +67,7 @@ public class GameModeController : MonoBehaviour {
             SelectedTile.InteractWith(_player);
             _player.InteractWith(SelectedTile);
         }
-        
+
         Debug.Log("clicked");
     }
 
