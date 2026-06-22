@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="gridEditorSection" style="flex-grow: 2; margin-top: 2%; margin-bottom: 2%;">
+        <ui:Label text="Grid Edit Section" style="font-size: 16px; -unity-font-style: bold;"/>
+        <uie:ObjectField label="selected asset" name="selectedObstacleAsset" type="UnityEngine.GameObject, UnityEngine.CoreModule"/>
+        <uie:ObjectField label="target grid" name="selectedGridAsset" type="UnityEngine.GameObject, UnityEngine.CoreModule"/>
+        <ui:Button text="Start Editing Grid" name="startEditingGrid" style="-unity-font-style: bold;"/>
+    </ui:VisualElement>
+</ui:UXML>
