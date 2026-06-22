@@ -115,7 +115,7 @@ public class GridSystem : MonoBehaviour {
 
     #region PathFinding
 
-    class Node  {
+    class Node {
         public Vector2Int pos;
         public int gCost; // cost for start -> cur
         public int hCost; // cost for cur -> end
@@ -129,8 +129,7 @@ public class GridSystem : MonoBehaviour {
         }
     }
 
-    class NodeComparer : IComparer<Node>
-    {
+    class NodeComparer : IComparer<Node> {
         public int Compare(Node x, Node y) {
             if (x == null) return 1;
             if (y == null) return -1;
@@ -148,9 +147,9 @@ public class GridSystem : MonoBehaviour {
                         return -1;
                     }
 
-                // this whole 'if' is handling the case where both node has same
-                // h and g cost. making us rely on cell coordinate as cell coordinate
-                // will always be different for different cell
+                    // this whole 'if' is handling the case where both node has same
+                    // h and g cost. making us rely on cell coordinate as cell coordinate
+                    // will always be different for different cell
                     if (x.gCost == y.gCost) {
                         if (x.pos.x.CompareTo(y.pos.x) != 0) {
                             return x.pos.x.CompareTo(y.pos.x);
@@ -171,7 +170,7 @@ public class GridSystem : MonoBehaviour {
 
     // find the shortest path between cell coord A to B using A* Algo
     // using city block distance
-    public  List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end) {
+    public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end) {
         if (!CellWithInGrid(start) || !CellWithInGrid(end)) {
             return null;
         }
@@ -187,13 +186,17 @@ public class GridSystem : MonoBehaviour {
             var cur = notVisited.Min;
             notVisited.Remove(cur);
 
-            if (visited.TryGetValue(cur.pos , out int bestCost) && bestCost <= cur.gCost){
+            if (visited.TryGetValue(cur.pos, out int bestCost) && bestCost <= cur.gCost) {
                 continue;
             }
 
 
             if (cur.pos == end) {
                 Destination = cur;
+                GameObject dest = GetTileFromCellNumber(cur.pos);
+                if (dest.GetComponent<TileController>().IsOccupied)
+                    Destination = cur.cameFrom;
+
                 break;
             }
 
@@ -205,11 +208,11 @@ public class GridSystem : MonoBehaviour {
             // this part could be optimized for a chunk by having a set to store
             // all the cells which are occupied
             GameObject tile = GetTileFromCellNumber(cur.pos);
-            if(cur.pos != start && tile.GetComponent<TileController>().IsOccupied) continue;
+            if (cur.pos != start && tile.GetComponent<TileController>().IsOccupied) continue;
 
             visited[cur.pos] = cur.gCost;
             // add all 4 neighbours
-            var nodePos = new Vector2Int(cur.pos.x , cur.pos.y);
+            var nodePos = new Vector2Int(cur.pos.x, cur.pos.y);
 
             nodePos.x++; // x+1
             notVisited.Add(new Node(
@@ -255,9 +258,10 @@ public class GridSystem : MonoBehaviour {
             path.Add(curNode.pos);
             curNode = curNode.cameFrom;
         }
+
         path.Add(curNode.pos);
         path.Reverse();
-        return  path;
+        return path;
     }
 
     #endregion
