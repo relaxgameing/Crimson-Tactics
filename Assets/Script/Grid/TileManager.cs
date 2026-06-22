@@ -1,14 +1,12 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TileManager : MonoBehaviour , IPointerEnterHandler,
-IPointerExitHandler{
+public class TileManager : MonoBehaviour, IPointerEnterHandler,
+    IPointerExitHandler {
 
     private Outline _outlineComponent;
-    public Vector2 CellNo {
-        get => GridGenerator.CellNumber(transform.position);
-    }
+
+    public Vector2 CellNo => GridSystem.CellNumber(this.transform.position);
 
     private void Start() {
         _outlineComponent = GetComponent<Outline>();

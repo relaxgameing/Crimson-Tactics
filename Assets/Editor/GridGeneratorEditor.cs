@@ -1,23 +1,34 @@
 using UnityEditor;
-using UnityEngine;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 
-[CustomEditor(typeof(GridGenerator))]
-public class GridGeneratorEditor : UnityEditor.Editor{
+[CustomEditor(typeof(GridSystem))]
+public class GridGeneratorEditor : Editor {
 
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-        GridGenerator grid = (GridGenerator)target;
-        GUILayout.Space(10);
-        if (GUILayout.Button("Generate Grid"))
-        {
-            grid.Generate();
-            EditorUtility.SetDirty(grid.gameObject);
-        }
-        if (GUILayout.Button("Clear Grid"))
-        {
-            grid.Clear();
-            EditorUtility.SetDirty(grid.gameObject);
-        }
+    public VisualTreeAsset visualTreeAsset;
+    private Button _clearGrid;
+    private Button _generateGrid;
+
+    private GridSystem _gridSystem;
+
+    private void OnEnable() {
+        _gridSystem = (GridSystem)this.target;
+    }
+
+    public override VisualElement CreateInspectorGUI() {
+        VisualElement root = new();
+
+        InspectorElement.FillDefaultInspector(root, this.serializedObject, this);
+
+        VisualElement custom = visualTreeAsset.Instantiate();
+        root.Add(custom);
+
+        _generateGrid = custom.Query<Button>("generateGrid");
+        _clearGrid = custom.Query<Button>("clearGrid");
+
+        _generateGrid.clicked += () => _gridSystem.Generate();
+        _clearGrid.clicked += () => _gridSystem.Clear();
+
+        return root;
     }
 }

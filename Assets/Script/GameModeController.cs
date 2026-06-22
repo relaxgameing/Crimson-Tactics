@@ -13,19 +13,19 @@ public class GameModeController : MonoBehaviour {
 
                 // If still not found, create a new GameObject
                 if (_instance is null) {
-                    GameObject obj = new GameObject("GameModeController");
+                    GameObject obj = new("GameModeController");
                     _instance = obj.AddComponent<GameModeController>();
                     DontDestroyOnLoad(obj);
                 }
             }
+
             return _instance;
         }
     }
 
-    [CreateProperty]
-    public  TileManager SelectedTile { get; private set; }
-    void Start()
-    {
+    [CreateProperty] public TileManager SelectedTile { get; private set; }
+
+    private void Start() {
         Debug.Log("Game Started");
     }
 
