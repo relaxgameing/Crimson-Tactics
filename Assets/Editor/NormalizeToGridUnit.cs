@@ -16,11 +16,19 @@ public class NormalizeToGridUnit : EditorWindow {
         MeshRenderer meshRenderer = go.GetComponent<MeshRenderer>();
         if (meshRenderer == null) return;
 
+        // making sure the object is in unit scale
+        meshRenderer.transform.localScale.Set(1, 1, 1);
+
         Bounds bounds = meshRenderer.bounds;
+
         float maxDim = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
         float scale = 1.0f / maxDim;
-
         go.transform.localScale = new Vector3(scale, scale, scale);
+
+        Transform anchor = meshRenderer.probeAnchor;
+        anchor.position.Scale(Vector3.one * scale);
+
+        meshRenderer.probeAnchor.SetPositionAndRotation(anchor.position, go.transform.rotation);
         EditorUtility.SetDirty(go);
     }
 }

@@ -9,6 +9,9 @@ public class GridSystem : MonoBehaviour {
 
     private GameObject _selectedObstacle;
 
+
+    public Vector2 GridDimension => new Vector2(gridRows, gridCols);
+
     // returns grid cell number for a particular world position
     // Note: functino Ignores Height
     // could use scriptable objects for the gridSize handling

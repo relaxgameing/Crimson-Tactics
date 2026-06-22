@@ -1,5 +1,4 @@
 using Unity.VisualScripting;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -8,15 +7,15 @@ using Object = UnityEngine.Object;
 
 
 public class GridEditorWindow : EditorWindow {
+    private ObjectField _assetToPlace;
+    private Button _confirmPlacement;
 
     private GridSystem _gridSystem;
-    private bool _isEditing;
+    private bool _isEditing = false;
 
     private GameObject _placementAsset;
-    private ObjectField _assetToPlace;
-    private TagField _targetGridTag;
     private Button _startEditingBtn;
-    private Button _confirmPlacement;
+    private TagField _targetGridTag;
 
     private void OnEnable() {
         _gridSystem = FindAnyObjectByType<GridSystem>();
@@ -41,10 +40,27 @@ public class GridEditorWindow : EditorWindow {
 
         _assetToPlace.RegisterValueChangedCallback(HandleObstacleValueChange);
         _startEditingBtn.clicked += HandleStartEditing;
+
+        _confirmPlacement.clicked += HandleAssetPlacement;
         _confirmPlacement.visible = false;
     }
 
-    private void OnSelectionChange() { }
+    private void OnSelectionChange() {
+        Debug.Log("placing assets on tile");
+        if (!_isEditing) {
+            return;
+        }
+
+        GameObject cur = Selection.activeGameObject;
+        if (cur.IsUnityNull() || !cur.CompareTag(_targetGridTag.value)) {
+            return;
+        }
+
+        TileManager tileManager = cur.GetComponent<TileManager>();
+        tileManager.SetObjectOnTile(_placementAsset);
+    }
+
+    private void HandleAssetPlacement() { }
 
     private void HandleStartEditing() {
         _isEditing = !_isEditing;
@@ -52,7 +68,16 @@ public class GridEditorWindow : EditorWindow {
         if (_isEditing) {
             _confirmPlacement.visible = true;
             _startEditingBtn.text = "Stop Editing";
-        }else {
+
+            var _cam =SceneView.GetAllSceneCameras()[0];
+            var dimension= _gridSystem.GridDimension;
+            var pos = _cam.transform.position;
+            _cam.transform.SetPositionAndRotation(new Vector3(pos.x + dimension.x / 2 ,
+                10 ,
+                pos.z + dimension.y / 2 ) ,
+                Quaternion.Euler(0 , 90 , 0));
+        }
+        else {
             _confirmPlacement.visible = false;
             _startEditingBtn.text = "Start Editing";
         }
@@ -60,13 +85,14 @@ public class GridEditorWindow : EditorWindow {
 
     private void HandleObstacleValueChange(ChangeEvent<Object> evt) {
         if (evt.newValue == null) {
-            _placementAsset= null;
+            _placementAsset = null;
             return;
         }
 
-        GameObject val = evt.newValue as GameObject;
+        GameObject val = (GameObject)evt.newValue;
         NormalizeToGridUnit.NormalizeToOneUnit(val);
-        _placementAsset= val;
+        _placementAsset = val;
+        Debug.Log("Setting " + val.name + " as placement asset");
     }
 
     [MenuItem("GridTools/Grid Editor")]
