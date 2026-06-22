@@ -56,8 +56,8 @@ public class GridEditorWindow : EditorWindow {
             return;
         }
 
-        TileManager tileManager = cur.GetComponent<TileManager>();
-        tileManager.SetObjectOnTile(_placementAsset);
+        TileController tileController = cur.GetComponent<TileController>();
+        tileController.SetObjectOnTile(_placementAsset);
     }
 
     private void HandleAssetPlacement() { }

@@ -7,11 +7,11 @@ public static class UIConvertor {
     [InitializeOnLoadMethod]
     public static void RegisterEditorConverters() {
         ConverterGroup group = new("TileManagerConverters");
-        group.AddConverter<TileManager, string>(CellNoConvertor);
+        group.AddConverter<TileController, string>(CellNoConvertor);
         ConverterGroups.RegisterConverterGroup(group);
     }
 
-    public static string CellNoConvertor(ref TileManager tile) {
+    public static string CellNoConvertor(ref TileController tile) {
         if (tile.IsUnityNull()) {
             return " No Selection";
         }

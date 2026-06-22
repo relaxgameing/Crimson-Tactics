@@ -23,13 +23,13 @@ public class GameModeController : MonoBehaviour {
         }
     }
 
-    [CreateProperty] public TileManager SelectedTile { get; private set; }
+    [CreateProperty] public TileController SelectedTile { get; private set; }
 
     private void Start() {
         Debug.Log("Game Started");
     }
 
-    public void SetSelectedTile(TileManager newTile) {
+    public void SetSelectedTile(TileController newTile) {
         SelectedTile = newTile;
     }
 }
