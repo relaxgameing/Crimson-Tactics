@@ -1,4 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class GridSystem : MonoBehaviour {
     [SerializeField] private int gridRows = 2;
@@ -8,7 +12,7 @@ public class GridSystem : MonoBehaviour {
     private bool _isEditing;
 
     private GameObject _selectedObstacle;
-
+    [SerializeField ]private List<GameObject> _tiles;
 
     public Vector2 GridDimension => new Vector2(gridRows, gridCols);
 
@@ -21,18 +25,6 @@ public class GridSystem : MonoBehaviour {
             Mathf.FloorToInt(worldPos.z) / gridSize);
     }
 
-    #region GridEditor
-
-    public void SetObstacle(GameObject obj) {
-        _selectedObstacle = obj;
-        Debug.Log("Selected obstacle " + obj.name);
-    }
-
-    public void ToggleEditingMode() {
-        _isEditing = !_isEditing;
-    }
-
-    #endregion
 
 
     #region GridGeneration
@@ -51,6 +43,7 @@ public class GridSystem : MonoBehaviour {
                 spawnedTile.transform.SetPositionAndRotation(pos, Quaternion.identity);
                 spawnedTile.name = $"cell_{i}_{j}";
                 spawnedTile.tag = TagHandle.GetExistingTag("Tile").ToString();
+                _tiles.Add(spawnedTile);
             }
         }
     }

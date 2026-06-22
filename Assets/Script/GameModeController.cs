@@ -1,8 +1,21 @@
+using System;
 using Unity.Properties;
+using Unity.VisualScripting;
 using UnityEngine;
+
+public enum GameState {
+    Simulating, // when any event is occuring
+    Idle // when player is deciding a move
+}
 
 public class GameModeController : MonoBehaviour {
     private static GameModeController _instance;
+    [CreateProperty] public TileController SelectedTile { get; private set; }
+    [SerializeField] private GameObject _player;
+
+    public GameState GameState { get; private set; }
+
+    public Action<GameState> OnGameStateChange;
 
     // Lazy initialization
     public static GameModeController Instance {
@@ -23,7 +36,9 @@ public class GameModeController : MonoBehaviour {
         }
     }
 
-    [CreateProperty] public TileController SelectedTile { get; private set; }
+    void HandleGameStateChange(GameState newState) {
+
+    }
 
     private void Start() {
         Debug.Log("Game Started");
@@ -31,5 +46,13 @@ public class GameModeController : MonoBehaviour {
 
     public void SetSelectedTile(TileController newTile) {
         SelectedTile = newTile;
+    }
+
+    public void ChangeGameState(GameState newState) {
+        GameState = newState;
+
+        // we want the gameModeController to get the state update first
+        HandleGameStateChange(GameState);
+        OnGameStateChange?.Invoke(GameState);
     }
 }
