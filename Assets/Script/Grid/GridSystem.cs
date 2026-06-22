@@ -205,7 +205,7 @@ public class GridSystem : MonoBehaviour {
             // this part could be optimized for a chunk by having a set to store
             // all the cells which are occupied
             GameObject tile = GetTileFromCellNumber(cur.pos);
-            if(tile.GetComponent<TileController>().IsOccupied) continue;
+            if(cur.pos != start && tile.GetComponent<TileController>().IsOccupied) continue;
 
             visited[cur.pos] = cur.gCost;
             // add all 4 neighbours

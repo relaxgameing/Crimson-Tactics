@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,7 +11,8 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     private Outline _outlineComponent;
 
     private bool _isHighLighted = false;
-    public bool IsOccupied => !_objectOnTileInstance.IsUnityNull();
+
+    public bool IsOccupied => objectOnTile.transform.childCount > 0;
 
     public Vector2 CellNo => GridSystem.Instance.CellNumber(this.transform.position);
 
