@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class TileController : MonoBehaviour, IPointerEnterHandler,
-    IPointerExitHandler {
+    IPointerExitHandler, IInteractable {
     [SerializeField] private GameObject objectOnTile;
     private GameObject _objectOnTileInstance;
     private Outline _outlineComponent;
@@ -38,5 +38,18 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
         }
 
         _objectOnTileInstance = Instantiate(obj, objectOnTile.transform);
+    }
+
+    public bool Interact() {
+        return true;
+    }
+
+    public bool InteractWith(IInteractable other) {
+        if (other is PlayerController player) {
+            Debug.Log("Interaction of tile with " + player.name);
+            return true;
+        }
+
+        return false;
     }
 }

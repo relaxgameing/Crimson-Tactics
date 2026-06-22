@@ -13,7 +13,7 @@ public enum GameState {
 public class GameModeController : MonoBehaviour {
     private static GameModeController _instance;
     [CreateProperty] public TileController SelectedTile { get; private set; }
-    [SerializeField] private GameObject _player;
+    [SerializeField] private PlayerController _player;
     [SerializeField] private InputActionReference interactionAction;
 
     public GameState GameState { get; private set; }
@@ -63,6 +63,11 @@ public class GameModeController : MonoBehaviour {
     }
 
     private void HandleInteraction(InputAction.CallbackContext obj) {
+        if (SelectedTile != null) {
+            SelectedTile.InteractWith(_player);
+            _player.InteractWith(SelectedTile);
+        }
+        
         Debug.Log("clicked");
     }
 
