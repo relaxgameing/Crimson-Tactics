@@ -28,7 +28,7 @@ public class GridSystem : MonoBehaviour {
         get {
             if (_instance is null) {
                 // Try to find existing instance in scene
-                _instance = FindObjectOfType<GridSystem>();
+                _instance = FindAnyObjectByType<GridSystem>();
 
                 // If still not found, create a new GameObject
                 if (_instance is null) {
@@ -101,14 +101,14 @@ public class GridSystem : MonoBehaviour {
     }
 
     public void Clear() {
-        var tiles = GameObject.FindGameObjectsWithTag("Tile");
-        foreach (GameObject tile in tiles) {
+        foreach (GameObject tile in _tiles) {
 #if UNITY_EDITOR
             DestroyImmediate(tile);
 #else
                 Destroy(tile);
 #endif
         }
+        _tiles.Clear();
     }
 
     #endregion

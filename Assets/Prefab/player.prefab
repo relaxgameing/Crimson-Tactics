@@ -30,11 +30,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af9fd54374c84410890822887f01c662, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af9fd54374c84410890822887f01c662, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: af9fd54374c84410890822887f01c662, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -133,3 +133,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d215885c6e3c348b8b75a704e91095f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  movementSpeed: 2
+  rotationSpeed: 0.5

@@ -5,11 +5,13 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class HUDUIBInder : MonoBehaviour {
     private Label _cellValue;
+    private Label _stateValue;
 
     private UIDocument _ui;
 
     private void Start() {
         _cellValue.dataSource = GameModeController.Instance;
+        _stateValue.dataSource = GameModeController.Instance;
     }
 
     private void OnEnable() {
@@ -20,5 +22,6 @@ public class HUDUIBInder : MonoBehaviour {
         }
 
         _cellValue = _ui.rootVisualElement.Query<Label>("cellNoValue").First();
+        _stateValue = _ui.rootVisualElement.Query<Label>("stateValue").First();
     }
 }

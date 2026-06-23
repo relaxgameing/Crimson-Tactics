@@ -12,11 +12,14 @@ public enum GameState {
 
 public class GameModeController : MonoBehaviour {
     private static GameModeController _instance;
-    [CreateProperty] public TileController SelectedTile { get; private set; }
-    [SerializeField] private PlayerController _player;
-    [SerializeField] private InputActionReference interactionAction;
 
-    public GameState GameState { get; private set; }
+    [CreateProperty] public TileController SelectedTile { get; private set; }
+
+    [SerializeField] private InputActionReference interactionAction;
+    private PlayerController _player;
+
+
+    [CreateProperty] public GameState GameState { get; private set; }
 
     public Action<GameState> OnGameStateChange;
 
@@ -25,7 +28,7 @@ public class GameModeController : MonoBehaviour {
         get {
             if (_instance is null) {
                 // Try to find existing instance in scene
-                _instance = FindObjectOfType<GameModeController>();
+                _instance = FindAnyObjectByType<GameModeController>();
 
                 // If still not found, create a new GameObject
                 if (_instance is null) {
@@ -55,6 +58,7 @@ public class GameModeController : MonoBehaviour {
     }
 
     private void OnEnable() {
+        _player = FindAnyObjectByType<PlayerController>();
         interactionAction.ToInputAction().performed += HandleInteraction;
     }
 

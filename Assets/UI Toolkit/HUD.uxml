@@ -1,16 +1,16 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements"
-         noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
-         editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/HUD.uss?fileID=7433441132597879392&amp;guid=c7bd0be44e4724971b212d0a9121790e&amp;type=3#HUD"/>
-    <ui:Label text="Cell:" name="cellNoLabel"
-              style="width: 5%; height: 5%; align-items: center; justify-content: center; top: 2%; left: 2%; -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;);">
-        <ui:Label text="" name="cellNoValue"
-                  style="width: 150%; height: 100%; align-items: center; justify-content: center; top: 2%; left: 150%; -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;); font-size: 32%;">
+    <ui:Label text="Cell:" name="cellNoLabel" style="width: 5%; height: 5%; align-items: center; justify-content: center; top: 2%; left: 2%; -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;);">
+        <ui:Label text="" name="cellNoValue" style="width: 150%; height: 100%; align-items: center; justify-content: center; top: 2%; left: 150%; -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;); font-size: 32%;">
             <Bindings>
-                <ui:DataBinding property="text" data-source-path="SelectedTile"
-                                data-source-type="GameModeController, Assembly-CSharp"
-                                binding-mode="ToTarget"
-                                source-to-ui-converters="TileManagerConverters"/>
+                <ui:DataBinding property="text" data-source-path="SelectedTile" data-source-type="GameModeController, Assembly-CSharp" binding-mode="ToTarget" source-to-ui-converters="TypeConvertors"/>
+            </Bindings>
+        </ui:Label>
+    </ui:Label>
+    <ui:Label text="State:" name="gameState" style="width: 5%; height: 5%; align-items: center; justify-content: center; top: 2%; left: 2%; -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;);">
+        <ui:Label text="" name="stateValue" style="width: 150%; height: 100%; align-items: center; justify-content: center; top: 2%; left: 150%; -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;); font-size: 32%;">
+            <Bindings>
+                <ui:DataBinding property="text" data-source-path="GameState" data-source-type="GameModeController, Assembly-CSharp" binding-mode="ToTarget" source-to-ui-converters="TypeConvertors"/>
             </Bindings>
         </ui:Label>
     </ui:Label>
