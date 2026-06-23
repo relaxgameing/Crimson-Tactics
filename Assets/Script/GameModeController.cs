@@ -66,8 +66,15 @@ public class GameModeController : MonoBehaviour {
         interactionAction.ToInputAction().performed -= HandleInteraction;
     }
 
+    // this is the entry point of all kind of interaction with the game
     private void HandleInteraction(InputAction.CallbackContext obj) {
+        // no interactions will occur when the state is in simulating
+        if (GameState == GameState.Simulating) {
+            return;
+        }
+
         if (SelectedTile != null) {
+            ChangeGameState(GameState.Simulating);
             SelectedTile.InteractWith(_player);
             _player.InteractWith(SelectedTile);
         }

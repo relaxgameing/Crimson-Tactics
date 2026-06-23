@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour, IInteractable {
 
             _pathToTake.Clear();
             _elapsedTime = 0;
+            GameModeController.Instance.ChangeGameState(GameState.Idle);
         }
     }
 
@@ -76,6 +77,8 @@ public class PlayerController : MonoBehaviour, IInteractable {
             );
 
             if (path == null) {
+                Debug.Log("Tile Unreachable");
+                GameModeController.Instance.ChangeGameState(GameState.Idle);
                 return true;
             }
 
