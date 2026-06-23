@@ -63,6 +63,12 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
             return true;
         }
 
+        if (other is EnemyAI ai) {
+            Debug.Log("Interaction of tile with " + ai.name);
+            ai.transform.SetParent(objectOnTile.transform);
+            return true;
+        }
+
         return false;
     }
 }

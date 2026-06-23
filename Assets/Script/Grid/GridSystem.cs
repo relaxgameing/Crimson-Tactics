@@ -168,16 +168,23 @@ public class GridSystem : MonoBehaviour {
     }
 
 
+    public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end) {
+        return PathFromAToB(start, end , 0 , true);
+    }
 
     // find the shortest path between cell coord A to B using A* Algo
     // using city block distance
-    public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end) {
+    // radius means how far away tile is allowed
+    // strict radius means that the destination can't be closer than radius
+    public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end , int radius , bool
+            strictRadius) {
         if (!CellWithInGrid(start) || !CellWithInGrid(end) || start == end) {
             return null;
         }
 
         GameObject dest = GetTileFromCellNumber(end);
-        if (dest == null || dest.GetComponent<TileController>().IsOccupied)
+        // this are the guarantee cases where skipping is good
+        if (!dest || (dest.GetComponent<TileController>().IsOccupied && radius == 0))
             return null;
 
         var nodeComparer = new NodeComparer();
@@ -191,25 +198,29 @@ public class GridSystem : MonoBehaviour {
             var cur = notVisited.Min;
             notVisited.Remove(cur);
 
+            // checking if the current node is viable
+            if (!CellWithInGrid(cur.pos)) {
+                continue;
+            }
+            // this part could be optimized for a chunk by having a set to store
+            // all the cells which are occupied
+            GameObject tile = GetTileFromCellNumber(cur.pos);
+            if (cur.pos != start && tile.GetComponent<TileController>().IsOccupied)
+                continue;
+
+
             if (visited.TryGetValue(cur.pos, out int bestCost) && bestCost <= cur.gCost) {
                 continue;
             }
 
-
-            if (cur.pos == end) {
-                Destination = cur;
-                break;
-            }
-
-            if (!CellWithInGrid(cur.pos)) {
+            int dist = CityBlockDist(cur.pos, end);
+            if (dist == radius || (!strictRadius && dist < radius)) {
+                if (Destination == null|| Destination.gCost > cur.gCost) {
+                    Destination = cur;
+                }
                 continue;
             }
 
-
-            // this part could be optimized for a chunk by having a set to store
-            // all the cells which are occupied
-            GameObject tile = GetTileFromCellNumber(cur.pos);
-            if (cur.pos != start && tile.GetComponent<TileController>().IsOccupied) continue;
 
             visited[cur.pos] = cur.gCost;
             // add all 4 neighbours
