@@ -62,6 +62,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af9fd54374c84410890822887f01c662, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5468256975132744538}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af9fd54374c84410890822887f01c662, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 90547184569280676}
   m_SourcePrefab: {fileID: 100100000, guid: af9fd54374c84410890822887f01c662, type: 3}
 --- !u!1 &8357881661029171042 stripped
 GameObject:
@@ -103,5 +106,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d215885c6e3c348b8b75a704e91095f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  movementSpeed: 2
-  rotationSpeed: 0.5
+--- !u!114 &90547184569280676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357881661029171042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842f3331886544fcbb0253304f33e418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoverComponent
+  movementSpeed: 0.7
+  rotationSpeed: 0.2
+  lookAt: {x: 0, y: 0, z: 1}

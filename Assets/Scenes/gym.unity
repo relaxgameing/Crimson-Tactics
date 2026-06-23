@@ -8648,6 +8648,7 @@ GameObject:
   - component: {fileID: 1128581475}
   - component: {fileID: 1128581478}
   - component: {fileID: 1128581476}
+  - component: {fileID: 1128581479}
   m_Layer: 0
   m_Name: player(Clone)
   m_TagString: Untagged
@@ -8684,8 +8685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d215885c6e3c348b8b75a704e91095f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  movementSpeed: 0.7
-  rotationSpeed: 0.2
 --- !u!136 &1128581478
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8709,6 +8708,21 @@ CapsuleCollider:
   m_Height: 0.76
   m_Direction: 1
   m_Center: {x: 0, y: 0.36, z: 0}
+--- !u!114 &1128581479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128581474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842f3331886544fcbb0253304f33e418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoverComponent
+  movementSpeed: 0.7
+  rotationSpeed: 0.2
+  lookAt: {x: 0, y: 0, z: 1}
 --- !u!1 &1130724645
 GameObject:
   m_ObjectHideFlags: 0
