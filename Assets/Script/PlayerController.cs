@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour, IInteractable {
             _elapsedTime += Time.deltaTime;
             if (_elapsedTime >= movementSpeed) {
                 Debug.Log("one tile movement completed");
+                _lookAt = _pathToTake[_nextTileIdx].transform.position -
+                    _pathToTake[_prevTileIdx].transform.position;
                 _prevTileIdx = _nextTileIdx;
                 _nextTileIdx++;
                 _elapsedTime = 0;
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour, IInteractable {
                 _elapsedTime /
                 movementSpeed);
             // we are not changing the y
-            // newPos.y = transform.position.y;
+            newPos.y = transform.position.y;
             Debug.Log("updating transform");
             transform.SetPositionAndRotation(newPos , Quaternion.Euler(0 ,newRotation , 0));
         }
