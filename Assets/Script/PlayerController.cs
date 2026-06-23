@@ -16,12 +16,14 @@ public class PlayerController : MonoBehaviour, IInteractable {
     }
 
     private void Update() {
-        // we move if we have a path
-        MovePlayer();
+        // we only move if the state is simulating
+        if (GameModeController.Instance.GameState == GameState.Simulating) {
+            MovePlayer();
+        }
     }
 
     void MovePlayer() {
-        if (_pathToTake.Count <= 0) return;
+        if (_pathToTake.Count <= 1) return;
 
         _elapsedTime += Time.deltaTime;
 
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour, IInteractable {
 
             _pathToTake.Clear();
             _elapsedTime = 0;
-            GameModeController.Instance.ChangeGameState(GameState.Idle);
+            GameModeController.Instance.ObjectCompletedSimulating(gameObject);
         }
     }
 
@@ -78,8 +80,7 @@ public class PlayerController : MonoBehaviour, IInteractable {
 
             if (path == null) {
                 Debug.Log("Tile Unreachable");
-                GameModeController.Instance.ChangeGameState(GameState.Idle);
-                return true;
+                return false;
             }
 
             _pathToTake.Clear();
@@ -95,6 +96,8 @@ public class PlayerController : MonoBehaviour, IInteractable {
             _elapsedTime = 0;
         }
 
-        return false;
+            GameModeController.Instance.AddObjectSimulating(gameObject);
+
+        return true;
     }
 }

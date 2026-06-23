@@ -54,6 +54,7 @@ public class GridSystem : MonoBehaviour {
     }
 
 
+    // checks if the cell no is valid for current grid size
     public bool CellWithInGrid(Vector2 cellNo) {
         if (cellNo.y < 0 || cellNo.y >= gridCols) {
             return false;
@@ -171,9 +172,13 @@ public class GridSystem : MonoBehaviour {
     // find the shortest path between cell coord A to B using A* Algo
     // using city block distance
     public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end) {
-        if (!CellWithInGrid(start) || !CellWithInGrid(end)) {
+        if (!CellWithInGrid(start) || !CellWithInGrid(end) || start == end) {
             return null;
         }
+
+        GameObject dest = GetTileFromCellNumber(end);
+        if (dest == null || dest.GetComponent<TileController>().IsOccupied)
+            return null;
 
         var nodeComparer = new NodeComparer();
         SortedSet<Node> notVisited = new SortedSet<Node>(nodeComparer);
@@ -193,10 +198,6 @@ public class GridSystem : MonoBehaviour {
 
             if (cur.pos == end) {
                 Destination = cur;
-                GameObject dest = GetTileFromCellNumber(cur.pos);
-                if (dest.GetComponent<TileController>().IsOccupied)
-                    Destination = cur.cameFrom;
-
                 break;
             }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,14 +15,13 @@ public class GameModeController : MonoBehaviour {
     private static GameModeController _instance;
 
     [CreateProperty] public TileController SelectedTile { get; private set; }
-
     [SerializeField] private InputActionReference interactionAction;
-    private PlayerController _player;
-
-
     [CreateProperty] public GameState GameState { get; private set; }
+    private PlayerController _player;
+    private HashSet<GameObject> _currentlySimulating;
 
     public Action<GameState> OnGameStateChange;
+    public Action OnSimulationComplete;
 
     // Lazy initialization
     public static GameModeController Instance {
@@ -57,6 +57,10 @@ public class GameModeController : MonoBehaviour {
         }
     }
 
+    private void Awake() {
+        _currentlySimulating = new HashSet<GameObject>();
+    }
+
     private void OnEnable() {
         _player = FindAnyObjectByType<PlayerController>();
         interactionAction.ToInputAction().performed += HandleInteraction;
@@ -74,7 +78,6 @@ public class GameModeController : MonoBehaviour {
         }
 
         if (SelectedTile != null) {
-            ChangeGameState(GameState.Simulating);
             SelectedTile.InteractWith(_player);
             _player.InteractWith(SelectedTile);
         }
@@ -99,4 +102,18 @@ public class GameModeController : MonoBehaviour {
         OnGameStateChange?.Invoke(GameState);
     }
 
+    public void AddObjectSimulating(GameObject obj) {
+        _currentlySimulating.Add(obj);
+        if (_currentlySimulating.Count > 0 && GameState != GameState.Simulating) {
+            ChangeGameState(GameState.Simulating);
+        }
+    }
+
+    public void ObjectCompletedSimulating(GameObject obj) {
+        _currentlySimulating.Remove(obj);
+        if (_currentlySimulating.Count == 0  && GameState == GameState.Simulating) {
+            ChangeGameState(GameState.Idle);
+        }
+        OnSimulationComplete?.Invoke();
+    }
 }
