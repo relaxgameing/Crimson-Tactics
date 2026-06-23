@@ -59,6 +59,7 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     public bool InteractWith(IInteractable other) {
         if (other is PlayerController player) {
             Debug.Log("Interaction of tile with " + player.name);
+            player.transform.SetParent(objectOnTile.transform);
             return true;
         }
 

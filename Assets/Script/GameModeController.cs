@@ -78,8 +78,10 @@ public class GameModeController : MonoBehaviour {
         }
 
         if (SelectedTile != null) {
-            SelectedTile.InteractWith(_player);
             _player.InteractWith(SelectedTile);
+
+            // here order matters because SelectedTile is relocating the player parent
+            SelectedTile.InteractWith(_player);
         }
 
         Debug.Log("clicked");

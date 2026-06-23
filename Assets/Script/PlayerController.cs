@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour, IInteractable {
             _elapsedTime = 0;
         }
 
-            GameModeController.Instance.AddObjectSimulating(gameObject);
+        GameModeController.Instance.AddObjectSimulating(gameObject);
 
         return true;
     }
