@@ -1,5 +1,5 @@
 
-This is a simple 3D Isometric game made for demonstration purpose.
+#### This is a simple 3D Isometric game made for demonstration purpose.
 
 # Features
 
@@ -31,11 +31,3 @@ the enemy finds the best path to reach near the player current location and upda
 
 
 https://github.com/user-attachments/assets/a098b8d2-d95c-4d3e-9fc5-5437d2344f21
-
-
-
-
-
-
-
-

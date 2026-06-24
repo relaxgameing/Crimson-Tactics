@@ -15,11 +15,6 @@ public class GridSystem : MonoBehaviour {
     private bool _isEditing;
 
     private GameObject _selectedObstacle;
-    // future optimization:
-    // could have each tile ref of all the surrounding 8 tiles like a linklist
-    // to avoid accessing this massive list;
-    // or
-    // add chunk based system
     [SerializeField] private List<GameObject> _tiles;
 
     public Vector2 GridDimension => new Vector2(gridRows, gridCols);

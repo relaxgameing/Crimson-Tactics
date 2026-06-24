@@ -35,8 +35,6 @@ public class EnemyAI : MonoBehaviour, IInteractable {
             false
         );
 
-        // when player reaches his destination then enemy is not moving because the target is now
-        // considered as a obstacle
         if (newPath.IsUnityNull())
             return;
 

@@ -50,7 +50,10 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
 
     public void RemoveFocus(int instanceId) {
         _InFocus.Remove(instanceId);
-        _outlineComponent.OutlineColor = _prevColor ?? pointerColor;
+        if (instanceId == _pointerID) {
+            _outlineComponent.OutlineColor = _prevColor ?? pointerColor;
+        }
+
         if (_InFocus.Count == 0) {
             HighLightTile(false , pointerColor);
         }
