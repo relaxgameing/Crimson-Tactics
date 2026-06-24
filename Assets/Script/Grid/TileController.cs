@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,35 +8,55 @@ using UnityEngine.EventSystems;
 public class TileController : MonoBehaviour, IPointerEnterHandler,
     IPointerExitHandler, IInteractable {
     [SerializeField] private GameObject objectOnTile;
+    [SerializeField] private Color pointerColor = Color.white;
     private GameObject _objectOnTileInstance;
     private Outline _outlineComponent;
-
-    private bool _isHighLighted = false;
-
     public bool IsOccupied => objectOnTile.transform.childCount > 0;
 
     public Vector2 CellNo => GridSystem.Instance.CellNumber(this.transform.position);
+
+    // the number of entity has this tile on focus
+    private HashSet<int> _InFocus;
+    private Color? _prevColor = null;
+    private int _pointerID = Int32.MaxValue;
+
+    private void Awake() {
+        _InFocus = new HashSet<int>();
+    }
 
     private void OnEnable() {
         _outlineComponent = GetComponent<Outline>();
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        _outlineComponent.enabled = true;
+        AddFocus(_pointerID , pointerColor);
         GameModeController.Instance.SetSelectedTile(this);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (!_isHighLighted) {
-            _outlineComponent.enabled = false;
-        }
+        RemoveFocus(_pointerID);
         if (GameModeController.Instance.SelectedTile == this) {
             GameModeController.Instance.SetSelectedTile(null);
         }
     }
 
-    public void HighLightTile(bool val , Color color ) {
-        _isHighLighted = val;
+    public void AddFocus(int instanceId, Color color) {
+        if (instanceId != _pointerID) {
+            _prevColor = color;
+        }
+        _InFocus.Add(instanceId);
+        HighLightTile(true, color);
+    }
+
+    public void RemoveFocus(int instanceId) {
+        _InFocus.Remove(instanceId);
+        _outlineComponent.OutlineColor = _prevColor ?? pointerColor;
+        if (_InFocus.Count == 0) {
+            HighLightTile(false , pointerColor);
+        }
+    }
+
+    public void HighLightTile(bool val, Color color) {
         _outlineComponent.enabled = val;
         _outlineComponent.OutlineColor = color;
     }

@@ -58,7 +58,7 @@ public class MoverComponent : MonoBehaviour {
                 _elapsedTime = 0;
 
                 foreach (TileController tile in _pathToTake) {
-                    tile.HighLightTile(false, Color.white);
+                    tile.RemoveFocus(GetInstanceID());
                 }
 
                 _pathToTake.Clear();
@@ -95,7 +95,7 @@ public class MoverComponent : MonoBehaviour {
         foreach (Vector2 tilePos in path) {
             var cur = GridSystem.Instance.GetTileFromCellNumber(tilePos);
             var controller = cur.GetComponent<TileController>();
-            controller.HighLightTile(true, pathColor);
+            controller.AddFocus(GetInstanceID(), pathColor);
             _pathToTake.Add(controller);
         }
     }

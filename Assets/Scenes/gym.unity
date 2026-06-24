@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 407740464}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &2232836
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -317,6 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1931824057}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &41216214
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -463,6 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 673711117}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &41834702
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -820,6 +823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 456067854}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &64123515
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -966,6 +970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 180978399}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &80143563
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1233,6 +1238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 683464996}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &90085252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1411,6 +1417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 2076096504}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &98779820
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1709,6 +1716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 87782706}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &185200632
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1886,6 +1894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1014907612}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &216262017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2032,6 +2041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1171901895}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &229559861
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2209,6 +2219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 282420083}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &236740070
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2355,6 +2366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 744203577}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &260274885
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2501,6 +2513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 288633637}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &266706540
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3081,6 +3094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 480466986}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &349074138
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3569,6 +3583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 2030862186}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &446193743
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3715,6 +3730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 855262769}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &446373024
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4157,6 +4173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 440592560}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &557304097
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4393,6 +4410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1350215541}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &561626129
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4751,6 +4769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1784590921}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &588084009
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5019,6 +5038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1515734512}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &651914716
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5260,6 +5280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 922378243}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &698962824
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5653,6 +5674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1591216568}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &829353875
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5879,6 +5901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1051060053}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &844670801
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6177,6 +6200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 853693130}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &872824427
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6538,6 +6562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1759625013}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &937241627
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6716,6 +6741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 361851843}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &943256844
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6984,6 +7010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 815004288}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &972921673
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7130,6 +7157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1674761208}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &973264151
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7276,6 +7304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1631152297}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &995933902
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7543,6 +7572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 840118517}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1022944776
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7753,6 +7783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 500362669}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1034389254
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7931,6 +7962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1288209833}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1054344854
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8077,6 +8109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1319521073}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1061667160
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8254,6 +8287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 940332647}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1075520919
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8400,6 +8434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1608145655}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1095831215
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8610,6 +8645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 922979606}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1111215037
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8756,6 +8792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 126182307}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1124178732
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8937,6 +8974,8 @@ MonoBehaviour:
   rotationSpeed: 0.2
   lookAt: {x: 0, y: 0, z: 1}
   pathColor: {r: 1, g: 0.9747956, b: 0, a: 1}
+  isIndependentOfSimulationState: 1
+  State: 0
 --- !u!1 &1130724645
 GameObject:
   m_ObjectHideFlags: 0
@@ -8989,6 +9028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1095934900}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1130724648
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9135,6 +9175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 231913920}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1130970483
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9343,6 +9384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1838172460}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1179654096
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9579,6 +9621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1108077775}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1228384222
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9725,6 +9768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 205949129}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1247753258
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10306,6 +10350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 801390353}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1341072150
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10452,6 +10497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 344034432}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1344603708
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10629,6 +10675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1075207815}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1360565441
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10806,6 +10853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1332265464}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1434784528
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10952,6 +11000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 366400942}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1487439120
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11098,6 +11147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1396286994}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1493403817
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11338,6 +11388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 93632562}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1555388577
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11484,6 +11535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1512726825}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1557788378
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11630,6 +11682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 892896513}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1583756948
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11819,6 +11872,8 @@ MonoBehaviour:
   rotationSpeed: 0.2
   lookAt: {x: 0, y: 0, z: 1}
   pathColor: {r: 0.8039216, g: 0.3607843, b: 0.3607843, a: 1}
+  isIndependentOfSimulationState: 1
+  State: 0
 --- !u!1 &1608145655
 GameObject:
   m_ObjectHideFlags: 0
@@ -12197,6 +12252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 728816167}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1688068570
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12343,6 +12399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1311347614}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1706181225
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12489,6 +12546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 55737774}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1722773084
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12635,6 +12693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 2064283775}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1727696382
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12908,6 +12967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1643485406}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1799405473
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13086,6 +13146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1280468528}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1820728683
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13264,6 +13325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1657578190}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1826236761
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13442,6 +13504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1544163175}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1854839949
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13716,6 +13779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 2022971357}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1964303981
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13862,6 +13926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 320804161}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &1988139501
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14040,6 +14105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1769380688}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &2011282059
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14699,6 +14765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1151202723}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &2091203137
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14935,6 +15002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileManager
   objectOnTile: {fileID: 1889962205}
+  pointerColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!65 &2108483763
 BoxCollider:
   m_ObjectHideFlags: 0
