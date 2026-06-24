@@ -17,14 +17,16 @@ public class MoverComponent : MonoBehaviour {
     [SerializeField] private bool isIndependentOfSimulationState = true;
 
     private List<TileController> _pathToTake;
+    private List<Vector2> _newPath; // redirect to this path
+    private bool _wantToRedirect;
     private int _nextTileIdx;
     private int _curTileIdx;
     private float _elapsedTime = 0;
-    // private bool _canMove = false;
-    // private bool _stopMoving = false;
     private IInteractable[] _interactables;
 
     public MoverState State = MoverState.Idle;
+
+    public event Action OnPathChanged;
 
     private void Awake() {
         _pathToTake = new List<TileController>(10);
@@ -42,6 +44,8 @@ public class MoverComponent : MonoBehaviour {
         // updates itself for the new state
         switch (State) {
             case MoverState.Idle:
+                // path change routine
+                SettingNewPath();
                 break;
             case MoverState.Moving:
                 break;
@@ -66,11 +70,26 @@ public class MoverComponent : MonoBehaviour {
         }
     }
 
+    private void SettingNewPath() {
+        if (!_wantToRedirect) {
+            return;
+        }
+
+        // ! order matters here we want to reset the _wantToRedirect
+        // else it will go in recursion
+        _wantToRedirect = false;
+        SetPath(_newPath);
+        _newPath = null;
+
+        Debug.Log("Path changed , invoking");
+        OnPathChanged?.Invoke();
+    }
+
     private void Reset() {
         ChangeMoverState(MoverState.Resetting);
     }
 
-    public void SetPath(List<Vector2> path) {
+    void SetPath(List<Vector2> path) {
         Reset();
 
         foreach (Vector2 tilePos in path) {
@@ -81,57 +100,86 @@ public class MoverComponent : MonoBehaviour {
         }
     }
 
+    // this function is responsible for notifying the mover component that we are
+    // changing the path we are currently taking , it doesnt update it instantly but
+    // waits for the previous movement to next tile complete then change course
+    public void ChangePath(List<Vector2> newPath) {
+        _newPath = newPath;
+        _wantToRedirect = true;
+        StopMoving();
+    }
+
+    public void WhenPathChangeComplete(Action callback) {
+        Action handle = null;
+        handle = () => {
+            OnPathChanged -= handle;
+            Debug.Log("callback");
+            callback();
+        };
+
+        OnPathChanged += handle;
+    }
+
     public void StartMoving() {
         ChangeMoverState(MoverState.Moving);
     }
 
     // stop moving and reset itself
-    public void StopMoving() {
+    void StopMoving() {
         ChangeMoverState(MoverState.Stopping);
     }
 
     public Vector2Int GetCellNumber() {
+        if (_pathToTake.Count > 1) {
+            return GridSystem.Instance.CellNumber(_pathToTake[_nextTileIdx].transform.position);
+        }
         return GridSystem.Instance.CellNumber(transform.position);
     }
 
     void Move() {
-        if (State != MoverState.Moving && State != MoverState.Stopping) {
+        if (State == MoverState.Idle) {
             return;
         }
 
-        if (_pathToTake.Count <= 1) return;
+        if (_pathToTake.Count <= 1) {
+            if (_wantToRedirect) {
+                // so that we can change path
+                ChangeMoverState(MoverState.Idle);
+            }
+
+            return;
+        }
 
         var nextTile = _pathToTake[_nextTileIdx];
         var curTile = _pathToTake[_curTileIdx];
+        if (!MoveOneTile(curTile, nextTile))
+            return;
 
-        if (MoveOneTile(curTile, nextTile) ) {
-
-            if (State == MoverState.Stopping) {
-                ChangeMoverState(MoverState.Resetting);
-            }
-
-            Debug.Log("one tile movement completed");
-            // when ever we reach a new tile we are interacting with it
-            foreach (IInteractable interactable in _interactables) {
-                nextTile.InteractWith(interactable);
-            }
-
-            lookAt = nextTile.transform.position - curTile.transform.position;
-            _curTileIdx = _nextTileIdx;
-            _nextTileIdx++;
-            _elapsedTime = 0;
-
+        Debug.Log("one tile movement completed");
+        // when ever we reach a new tile we are interacting with it
+        foreach (IInteractable interactable in _interactables) {
+            nextTile.InteractWith(interactable);
         }
+
+        lookAt = nextTile.transform.position - curTile.transform.position;
+        _curTileIdx = _nextTileIdx;
+        _nextTileIdx++;
+        _elapsedTime = 0;
+
 
         if (_nextTileIdx >= _pathToTake.Count) {
             Debug.Log("path travel complete");
             ChangeMoverState(MoverState.Resetting);
             GameModeController.Instance.ObjectCompletedSimulating(gameObject);
         }
+
+        if (State == MoverState.Stopping) {
+            ChangeMoverState(MoverState.Idle);
+        }
     }
 
     // returns true if moved completely
-    bool MoveOneTile(TileController curTile , TileController nextTile) {
+    bool MoveOneTile(TileController curTile, TileController nextTile) {
         _elapsedTime += Time.deltaTime;
         Vector3 movementDir = nextTile.transform.position - curTile.transform.position;
 

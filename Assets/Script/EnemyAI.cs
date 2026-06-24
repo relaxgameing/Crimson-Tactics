@@ -4,7 +4,7 @@ using UnityEngine;
 
 // we need mover to be able to move to target
 [RequireComponent(typeof(MoverComponent))]
-public class EnemyAI : MonoBehaviour , IInteractable {
+public class EnemyAI : MonoBehaviour, IInteractable {
 
     private MoverComponent _mover;
     private PlayerController _target;
@@ -29,20 +29,22 @@ public class EnemyAI : MonoBehaviour , IInteractable {
 
         var curPos = _mover.GetCellNumber();
         var newPath = GridSystem.Instance.PathFromAToB(
-            curPos ,
+            curPos,
             targetCell,
             1,
-            true
-            );
+            false
+        );
 
         // when player reaches his destination then enemy is not moving because the target is now
         // considered as a obstacle
-        if (!newPath.IsUnityNull()) {
-            _mover.StopMoving();
-            _mover.SetPath(newPath);
-            _mover.StartMoving();
-            _prevTile = targetCell;
-        }
+        if (newPath.IsUnityNull())
+            return;
+
+        Debug.Log("Changing ai path");
+        _mover.ChangePath(newPath);
+        _mover.WhenPathChangeComplete(_mover.StartMoving);
+        _prevTile = targetCell;
+
     }
 
     public bool Interact() {
