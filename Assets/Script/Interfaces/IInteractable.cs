@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Any GameObject that can participate in gameplay logic should implement this interface
 public interface IInteractable {
 
     // interact with a Interactable without any context

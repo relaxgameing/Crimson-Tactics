@@ -14416,8 +14416,8 @@ MonoBehaviour:
   gridRows: 8
   gridCols: 8
   gridSize: 1
-  defaultTile: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-  _tiles:
+  gridTilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
+  gridTiles:
   - {fileID: 1130724645}
   - {fileID: 1706181222}
   - {fileID: 972921670}

@@ -1,21 +1,21 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
+
+// Manages the whole grid system of the game and provides utility functions related to grid
 public class GridSystem : MonoBehaviour {
     private static GridSystem _instance;
 
     [SerializeField] private int gridRows = 2;
     [SerializeField] private int gridCols = 2;
     [SerializeField] private int gridSize = 1;
-    [SerializeField] private GameObject defaultTile;
-    private bool _isEditing;
+    [SerializeField] private GameObject gridTilePrefab;
 
-    private GameObject _selectedObstacle;
-    [SerializeField] private List<GameObject> _tiles;
+    [SerializeField] private List<GameObject> gridTiles;
 
     public Vector2 GridDimension => new Vector2(gridRows, gridCols);
 
@@ -35,6 +35,36 @@ public class GridSystem : MonoBehaviour {
 
             return _instance;
         }
+    }
+
+    private Vector2Int[] _movementDirections = new[] {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right,
+    };
+
+    private void OnValidate() {
+        if (gridTiles.Count == gridCols * gridRows) {
+            return;
+        }
+
+        GameObject.FindGameObjectsWithTag("Tile", gridTiles);
+
+        gridTiles.Sort(((a, ba) => {
+            var aCell = CellNumber(a.transform.position);
+            var bCell = CellNumber(ba.transform.position);
+
+            if (aCell.x < bCell.x) {
+                return -1;
+            }
+
+            if (aCell.x == bCell.x) {
+                return aCell.y - bCell.y;
+            }
+
+            return 1;
+        }));
     }
 
     #region Utils
@@ -65,7 +95,7 @@ public class GridSystem : MonoBehaviour {
 
     // returns tile gameobject from a given cell number
     public GameObject GetTileFromCellNumber(Vector2 cellNo) {
-        return _tiles[(int)(cellNo.x * gridRows + cellNo.y)];
+        return gridTiles[(int)(cellNo.x * gridRows + cellNo.y)];
     }
 
     int CityBlockDist(Vector2 a, Vector2 b) {
@@ -87,24 +117,26 @@ public class GridSystem : MonoBehaviour {
             pos.x = i * gridSize;
             for (int j = 0; j < gridCols; j++) {
                 pos.z = j * gridSize;
-                GameObject spawnedTile = Instantiate(defaultTile, this.transform);
+                GameObject spawnedTile = Instantiate(gridTilePrefab, this.transform);
                 spawnedTile.transform.SetPositionAndRotation(pos, Quaternion.identity);
                 spawnedTile.name = $"cell_{i}_{j}";
                 spawnedTile.tag = TagHandle.GetExistingTag("Tile").ToString();
-                _tiles.Add(spawnedTile);
+                gridTiles.Add(spawnedTile);
             }
         }
     }
 
+
     public void Clear() {
-        foreach (GameObject tile in _tiles) {
+        foreach (GameObject tile in gridTiles) {
 #if UNITY_EDITOR
             DestroyImmediate(tile);
 #else
                 Destroy(tile);
 #endif
         }
-        _tiles.Clear();
+
+        gridTiles.Clear();
     }
 
     #endregion
@@ -112,10 +144,10 @@ public class GridSystem : MonoBehaviour {
     #region PathFinding
 
     class Node {
-        public Vector2Int pos;
+        public Vector2Int pos; // cur position
         public int gCost; // cost for start -> cur
         public int hCost; // cost for cur -> end
-        public Node cameFrom;
+        public Node cameFrom; // from which tile we have reached the current one
 
         public Node(Vector2Int pos, int gCost, int hCost, Node cameFrom) {
             this.pos = pos;
@@ -125,6 +157,7 @@ public class GridSystem : MonoBehaviour {
         }
     }
 
+    // custom comparer for the hashset to work with our algo
     class NodeComparer : IComparer<Node> {
         public int Compare(Node x, Node y) {
             if (x == null) return 1;
@@ -164,26 +197,26 @@ public class GridSystem : MonoBehaviour {
 
 
     public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end) {
-        return PathFromAToB(start, end , 0 , true);
+        return PathFromAToB(start, end, 0, true);
     }
 
     // find the shortest path between cell coord A to B using A* Algo
     // using city block distance
-    // radius means how far away tile is allowed
-    // strict radius means that the destination can't be closer than radius
-    public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end , int radius , bool
-            strictRadius) {
+    // @param radius means how far away tile from destination is allowed or considered a valid
+    // solution
+    // @param strictRadius means that the destination can't be closer than radius
+    public List<Vector2> PathFromAToB(Vector2Int start, Vector2Int end, int radius, bool
+        strictRadius) {
         if (!CellWithInGrid(start) || !CellWithInGrid(end) || start == end) {
             return null;
         }
 
         GameObject dest = GetTileFromCellNumber(end);
-        // this are the guarantee cases where skipping is good
+        // these are the guarantee cases where skipping is good
         if (!dest || (dest.GetComponent<TileController>().IsOccupied && radius == 0))
             return null;
 
-        var nodeComparer = new NodeComparer();
-        SortedSet<Node> notVisited = new SortedSet<Node>(nodeComparer);
+        SortedSet<Node> notVisited = new SortedSet<Node>(new NodeComparer());
         Dictionary<Vector2Int, int> visited = new Dictionary<Vector2Int, int>();
 
         notVisited.Add(new Node(start, 0, CityBlockDist(start, end), null));
@@ -197,6 +230,7 @@ public class GridSystem : MonoBehaviour {
             if (!CellWithInGrid(cur.pos)) {
                 continue;
             }
+
             // this part could be optimized for a chunk by having a set to store
             // all the cells which are occupied
             GameObject tile = GetTileFromCellNumber(cur.pos);
@@ -210,48 +244,28 @@ public class GridSystem : MonoBehaviour {
 
             int dist = CityBlockDist(cur.pos, end);
             if (dist == radius || (!strictRadius && dist < radius)) {
-                if (Destination == null|| Destination.gCost > cur.gCost) {
+                if (Destination == null || Destination.gCost > cur.gCost) {
                     Destination = cur;
                 }
+
                 continue;
             }
 
 
             visited[cur.pos] = cur.gCost;
             // add all 4 neighbours
-            var nodePos = new Vector2Int(cur.pos.x, cur.pos.y);
+            foreach (Vector2Int dir in _movementDirections) {
+                if (!CellWithInGrid(cur.pos + dir)) {
+                    continue;
+                }
 
-            nodePos.x++; // x+1
-            notVisited.Add(new Node(
-                nodePos,
-                cur.gCost + 1,
-                CityBlockDist(nodePos, end),
-                cur
-            ));
-
-            nodePos.x -= 2; // x-1
-            notVisited.Add(new Node(
-                nodePos,
-                cur.gCost + 1,
-                CityBlockDist(nodePos, end),
-                cur
-            ));
-            nodePos.x++; // x
-
-            nodePos.y++; // y + 1
-            notVisited.Add(new Node(
-                nodePos,
-                cur.gCost + 1,
-                CityBlockDist(nodePos, end),
-                cur
-            ));
-            nodePos.y -= 2; // y -1
-            notVisited.Add(new Node(
-                nodePos,
-                cur.gCost + 1,
-                CityBlockDist(nodePos, end),
-                cur
-            ));
+                notVisited.Add(new Node(
+                    cur.pos + dir,
+                    cur.gCost + 1,
+                    CityBlockDist(cur.pos + dir, end),
+                    cur
+                ));
+            }
 
         }
 
