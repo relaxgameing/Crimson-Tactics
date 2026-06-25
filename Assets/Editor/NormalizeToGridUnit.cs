@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class NormalizeToGridUnit : EditorWindow {
     [MenuItem("Assets/Normalize Prefabs to 1 Unit")]
+    // to normalize multiple assets together inside the editor
     public static void NormalizePrefabs() {
         var targets = Selection.objects;
         foreach (Object obj in targets) {
@@ -12,6 +13,8 @@ public class NormalizeToGridUnit : EditorWindow {
         }
     }
 
+    // This function normalizes assets to fit inside our unit grid
+    // this is only required because of dependency towards third party free assets
     public static void NormalizeToOneUnit(GameObject go) {
         MeshRenderer meshRenderer = go.GetComponent<MeshRenderer>();
         if (meshRenderer == null) return;
