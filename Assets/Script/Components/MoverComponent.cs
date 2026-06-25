@@ -40,10 +40,12 @@ public class MoverComponent : MonoBehaviour {
         Move();
     }
 
+    // changes component state
     public void ChangeMoverState(MoverState newState) {
         State = newState;
 
         // updates itself for the new state
+        // this switch handle the whole state transitioning logic
         switch (State) {
             case MoverState.Idle:
                 // path change routine
@@ -77,7 +79,7 @@ public class MoverComponent : MonoBehaviour {
             return;
         }
 
-        // ! order matters here we want to reset the _wantToRedirect
+        // !NOTE: order matters here we want to reset the _wantToRedirect first
         // else it will go in recursion
         _wantToRedirect = false;
         SetPath(_newPath);
@@ -87,6 +89,7 @@ public class MoverComponent : MonoBehaviour {
         OnPathChanged?.Invoke();
     }
 
+    // completely reset the component to fresh look
     private void Reset() {
         ChangeMoverState(MoverState.Resetting);
     }
@@ -103,7 +106,7 @@ public class MoverComponent : MonoBehaviour {
     }
 
     // this function is responsible for notifying the mover component that we are
-    // changing the path we are currently taking , it doesnt update it instantly but
+    // changing the path we are currently taking , it doesn't update it instantly but
     // waits for the previous movement to next tile complete then change course
     public void ChangePath(List<Vector2> newPath) {
         _newPath = newPath;
@@ -111,6 +114,7 @@ public class MoverComponent : MonoBehaviour {
         StopMoving();
     }
 
+    // to perform one time action after changing path
     public void WhenPathChangeComplete(Action callback) {
         Action handle = null;
         handle = () => {
@@ -144,6 +148,7 @@ public class MoverComponent : MonoBehaviour {
         }
 
         if (_pathToTake.Count <= 1) {
+            // this is the case when we are starting from idle condition
             if (_wantToRedirect) {
                 // so that we can change path
                 ChangeMoverState(MoverState.Idle);
@@ -163,6 +168,7 @@ public class MoverComponent : MonoBehaviour {
             nextTile.InteractWith(interactable);
         }
 
+        // updating variable for next movement
         lookAt = nextTile.transform.position - curTile.transform.position;
         _curTileIdx = _nextTileIdx;
         _nextTileIdx++;
@@ -180,7 +186,7 @@ public class MoverComponent : MonoBehaviour {
         }
     }
 
-    // returns true if moved completely
+    // returns true if moved one tile completely
     bool MoveOneTile(TileController curTile, TileController nextTile) {
         _elapsedTime += Time.deltaTime;
         Vector3 movementDir = nextTile.transform.position - curTile.transform.position;
@@ -197,7 +203,6 @@ public class MoverComponent : MonoBehaviour {
         // we are not changing the y
         newPos.y = transform.position.y;
 
-        // Debug.Log("updating transform");
         transform.SetPositionAndRotation(newPos, Quaternion.Euler(0, newRotation, 0));
         if (_elapsedTime >= movementSpeed) {
             return true;
