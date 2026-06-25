@@ -64,7 +64,7 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
         _outlineComponent.OutlineColor = color;
     }
 
-    public void SetObjectOnTile(GameObject obj) {
+    public void PlaceObjectOnTile(GameObject obj) {
         if (!_objectOnTileInstance.IsUnityNull()) {
 #if UNITY_EDITOR
             DestroyImmediate(_objectOnTileInstance);
