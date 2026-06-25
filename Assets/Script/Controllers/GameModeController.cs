@@ -45,8 +45,8 @@ public class GameModeController : MonoBehaviour {
     void HandleGameStateChange(GameState newState) {
         switch (newState) {
             case GameState.GameStart:
-                var enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
-                foreach (EnemyAI ai in enemies) {
+                var enemies = FindObjectsByType<EnemyAIController>(FindObjectsSortMode.None);
+                foreach (EnemyAIController ai in enemies) {
                     ai.SetTarget(_player);
                 }
                 ChangeGameState(GameState.Idle);

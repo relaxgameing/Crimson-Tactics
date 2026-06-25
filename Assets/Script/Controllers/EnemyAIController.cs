@@ -4,7 +4,7 @@ using UnityEngine;
 
 // we need mover to be able to move to target
 [RequireComponent(typeof(MoverComponent))]
-public class EnemyAI : MonoBehaviour, IInteractable {
+public class EnemyAIController : MonoBehaviour, IInteractable {
 
     private MoverComponent _mover;
     private PlayerController _target;
@@ -28,7 +28,7 @@ public class EnemyAI : MonoBehaviour, IInteractable {
         }
 
         var curPos = _mover.GetCellNumber();
-        var newPath = GridSystem.Instance.PathFromAToB(
+        var newPath = _mover.FindNewPath(
             curPos,
             targetCell,
             1,

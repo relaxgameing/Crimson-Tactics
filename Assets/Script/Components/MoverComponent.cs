@@ -15,6 +15,7 @@ public class MoverComponent : MonoBehaviour {
     [SerializeField] private Vector3 lookAt = Vector3.forward;
     [SerializeField] private Color pathColor = Color.indianRed;
     [SerializeField] private bool isIndependentOfSimulationState = true;
+    private PathFinder _pathFinder;
 
     private List<TileController> _pathToTake;
     private List<Vector2> _newPath; // redirect to this path
@@ -31,6 +32,7 @@ public class MoverComponent : MonoBehaviour {
     private void Awake() {
         _pathToTake = new List<TileController>(10);
         _interactables = GetComponents<IInteractable>();
+        _pathFinder = GetComponent<PathFinder>();
     }
 
     private void Update() {
@@ -202,5 +204,15 @@ public class MoverComponent : MonoBehaviour {
         }
 
         return false;
+    }
+
+    public List<Vector2> FindNewPath(Vector2Int curPos, Vector2Int targetCell, int radius, bool
+            strictRadius) {
+        if (_pathFinder == null) {
+            Debug.Log("No Pathfinder provided");
+            return null;
+        }
+
+        return _pathFinder.PathFromAToB(curPos, targetCell, radius, strictRadius);
     }
 }

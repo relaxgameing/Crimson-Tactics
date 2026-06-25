@@ -62,6 +62,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8750866831249638232}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7303786729595710598}
   m_SourcePrefab: {fileID: 100100000, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
 --- !u!1 &5419449936390901786 stripped
 GameObject:
@@ -84,6 +87,8 @@ MonoBehaviour:
   rotationSpeed: 0.2
   lookAt: {x: 0, y: 0, z: 1}
   pathColor: {r: 0.8039216, g: 0.3607843, b: 0.3607843, a: 1}
+  isIndependentOfSimulationState: 1
+  State: 0
 --- !u!114 &8750866831249638232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,3 +101,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d132d81aaffe4052bfdd0046072b019f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+--- !u!114 &7303786729595710598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5419449936390901786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe81ba040344f719d0f908b918cbd05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AStarPathFinderComponent
+  movementDirections:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}

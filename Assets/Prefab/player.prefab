@@ -65,6 +65,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af9fd54374c84410890822887f01c662, type: 3}
       insertIndex: -1
       addedObject: {fileID: 90547184569280676}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af9fd54374c84410890822887f01c662, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5936894256314022606}
   m_SourcePrefab: {fileID: 100100000, guid: af9fd54374c84410890822887f01c662, type: 3}
 --- !u!1 &8357881661029171042 stripped
 GameObject:
@@ -121,3 +124,23 @@ MonoBehaviour:
   movementSpeed: 0.7
   rotationSpeed: 0.2
   lookAt: {x: 0, y: 0, z: 1}
+  pathColor: {r: 0.8039216, g: 0.3607843, b: 0.3607843, a: 1}
+  isIndependentOfSimulationState: 1
+  State: 0
+--- !u!114 &5936894256314022606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357881661029171042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe81ba040344f719d0f908b918cbd05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AStarPathFinderComponent
+  movementDirections:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
