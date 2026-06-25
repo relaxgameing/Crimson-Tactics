@@ -9,7 +9,7 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     IPointerExitHandler, IInteractable {
     [SerializeField] private GameObject objectOnTile;
     [SerializeField] private Color pointerColor = Color.white;
-    private GameObject _objectOnTileInstance;
+    private GameObject _objectOnTile;
     private Outline _outlineComponent;
     public bool IsOccupied => objectOnTile.transform.childCount > 0;
 
@@ -18,7 +18,8 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     // the number of entity has this tile on focus
     private HashSet<int> _InFocus;
     private Color? _prevColor = null;
-    private int _pointerID = Int32.MaxValue;
+    // used for identifying cursor related events
+    private readonly int _pointerID = Int32.MinValue;
 
     private void Awake() {
         _InFocus = new HashSet<int>();
@@ -65,15 +66,15 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     }
 
     public void PlaceObjectOnTile(GameObject obj) {
-        if (!_objectOnTileInstance.IsUnityNull()) {
+        if (!_objectOnTile.IsUnityNull()) {
 #if UNITY_EDITOR
-            DestroyImmediate(_objectOnTileInstance);
+            DestroyImmediate(_objectOnTile);
 #else
             Destroy(_objectOnTileInstance);
 #endif
         }
 
-        _objectOnTileInstance = Instantiate(obj, objectOnTile.transform);
+        _objectOnTile = Instantiate(obj, objectOnTile.transform);
     }
 
     public bool Interact() {
