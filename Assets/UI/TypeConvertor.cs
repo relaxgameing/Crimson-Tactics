@@ -5,6 +5,7 @@ using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+// responsible for type conversion , mainly used for UIToolkit conversion for data binding
 public static class TypeConvertor {
 
     [InitializeOnLoadMethod]

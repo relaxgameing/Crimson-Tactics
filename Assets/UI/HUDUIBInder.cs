@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+// responsible to bind the dataSrc for the HUD UI
 [RequireComponent(typeof(UIDocument))]
 public class HUDUIBInder : MonoBehaviour {
     private Label _cellValue;
