@@ -66,6 +66,9 @@ public class GridDataEditor : Editor
                 SerializedProperty tile =
                     cell.FindPropertyRelative("tilePrefab");
 
+                SerializedProperty obstacles =
+                    cell.FindPropertyRelative("obstaclePrefabs");
+
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
                 EditorGUILayout.LabelField(
@@ -79,6 +82,11 @@ public class GridDataEditor : Editor
                     EditorGUILayout.PropertyField(tile, true);
                 else
                     EditorGUILayout.HelpBox("Tile reference is null.", MessageType.Warning);
+
+                if (obstacles != null)
+                    EditorGUILayout.PropertyField(obstacles, true);
+                else
+                    EditorGUILayout.HelpBox("obstacle reference is null.", MessageType.Warning);
 
                 EditorGUILayout.EndVertical();
 
