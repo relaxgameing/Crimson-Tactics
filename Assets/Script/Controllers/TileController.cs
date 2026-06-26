@@ -7,11 +7,12 @@ using UnityEngine.EventSystems;
 
 public class TileController : MonoBehaviour, IPointerEnterHandler,
     IPointerExitHandler, IInteractable {
-    [SerializeField] private GameObject objectOnTile;
+    // to perform any kind of interaction we want to the entity entered the tile
+    [SerializeField] private BoxCollider interactionArea;
+    // tile only interact with things which has this tag
+    [SerializeField] private string interactionTag;
     [SerializeField] private Color pointerColor = Color.white;
-    private GameObject _objectOnTile;
     private Outline _outlineComponent;
-    public bool IsOccupied => objectOnTile.transform.childCount > 0;
 
     public Vector2 CellNo => GridSystem.Instance.CellNumber(this.transform.position);
 
@@ -30,6 +31,10 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
+        // var hit = eventData.pointerCurrentRaycast.gameObject;
+        //
+        // Debug.Log(hit.name);
+        // Debug.Log(LayerMask.LayerToName(hit.layer));
         AddFocus(_pointerID , pointerColor);
         GameModeController.Instance.SetSelectedTile(this);
     }
@@ -65,18 +70,6 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
         _outlineComponent.OutlineColor = color;
     }
 
-    public void PlaceObjectOnTile(GameObject obj) {
-        if (!_objectOnTile.IsUnityNull()) {
-#if UNITY_EDITOR
-            DestroyImmediate(_objectOnTile);
-#else
-            Destroy(_objectOnTileInstance);
-#endif
-        }
-
-        _objectOnTile = Instantiate(obj, objectOnTile.transform);
-    }
-
     public bool Interact() {
         return true;
     }
@@ -84,13 +77,11 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     public bool InteractWith(IInteractable other) {
         if (other is PlayerController player) {
             Debug.Log("Interaction of tile with " + player.name);
-            player.transform.SetParent(objectOnTile.transform);
             return true;
         }
 
         if (other is EnemyAIController ai) {
             Debug.Log("Interaction of tile with " + ai.name);
-            ai.transform.SetParent(objectOnTile.transform);
             return true;
         }
 

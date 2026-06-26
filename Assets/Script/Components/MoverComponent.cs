@@ -98,10 +98,9 @@ public class MoverComponent : MonoBehaviour {
         Reset();
 
         foreach (Vector2 tilePos in path) {
-            var cur = GridSystem.Instance.GetTileFromCellNumber(tilePos);
-            var controller = cur.GetComponent<TileController>();
-            controller.AddFocus(GetInstanceID(), pathColor);
-            _pathToTake.Add(controller);
+            var cur = GridSystem.Instance.GetTileInfoOfCellNumber(tilePos);
+            cur.Tile.AddFocus(GetInstanceID(), pathColor);
+            _pathToTake.Add(cur.Tile);
         }
     }
 

@@ -79,9 +79,9 @@ public class AStarPathFinderComponent :  PathFinder {
             return null;
         }
 
-        GameObject dest = GridSystem.Instance.GetTileFromCellNumber(end);
+        TileInfo dest = GridSystem.Instance.GetTileInfoOfCellNumber(end);
         // these are the guarantee cases where skipping is good
-        if (!dest || (dest.GetComponent<TileController>().IsOccupied && radius == 0))
+        if (dest == null || (dest.isOccupied && radius == 0))
             return null;
 
         SortedSet<Node> notVisited = new SortedSet<Node>(new NodeComparer());
@@ -101,8 +101,8 @@ public class AStarPathFinderComponent :  PathFinder {
 
             // this part could be optimized for a chunk by having a set to store
             // all the cells which are occupied
-            GameObject tile = GridSystem.Instance.GetTileFromCellNumber(cur.Pos);
-            if (cur.Pos != start && tile.GetComponent<TileController>().IsOccupied)
+            TileInfo tileInfo = GridSystem.Instance.GetTileInfoOfCellNumber(cur.Pos);
+            if (cur.Pos != start && tileInfo.isOccupied)
                 continue;
 
 

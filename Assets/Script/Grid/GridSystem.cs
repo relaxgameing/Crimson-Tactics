@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
-
 
 // Manages the whole grid system of the game and provides utility functions related to grid
 public class GridSystem : MonoBehaviour {
@@ -14,8 +14,9 @@ public class GridSystem : MonoBehaviour {
     [SerializeField] private int gridCols = 2;
     [SerializeField] private int gridSize = 1;
     [SerializeField] private GameObject gridTilePrefab;
+    [SerializeField] private GridData _gridData;
 
-    [SerializeField] private List<GameObject> gridTiles;
+    private Dictionary<Vector2Int, TileInfo> _grid = new();
 
     public Vector2 GridDimension => new Vector2(gridRows, gridCols);
 
@@ -37,33 +38,105 @@ public class GridSystem : MonoBehaviour {
         }
     }
 
+    private void Awake() {
+        Debug.Log(_grid.Count);
+    }
 
     private void OnValidate() {
-        if (gridTiles.Count == gridCols * gridRows) {
-            return;
+        if (_grid == null) {
+            _grid = new();
         }
 
-        GameObject.FindGameObjectsWithTag("Tile", gridTiles);
+        // making sure we have the reference to all the tiles objects currently
+        // present in the scene
+        // as if counts are not equal it means there is some miss match between the
+        // current _grid and scene objects
+        if (_grid.Count != transform.childCount) {
+            ValidateGrid();
+        }
 
-        gridTiles.Sort(((a, ba) => {
-            var aCell = CellNumber(a.transform.position);
-            var bCell = CellNumber(ba.transform.position);
+        if (_gridData == null) {
+            Debug.LogError("_grid system not attached to scriptable Object");
+        }
 
-            if (aCell.x < bCell.x) {
-                return -1;
+        if (gridTilePrefab == null) {
+            Debug.LogError("_grid Tile prefab not set");
+        }
+        else {
+            if (gridTilePrefab.GetComponent<TileController>().IsUnityNull()) {
+                Debug.LogError("provided prefab doesnt have TileController");
             }
+        }
 
-            if (aCell.x == bCell.x) {
-                return aCell.y - bCell.y;
-            }
-
-            return 1;
-        }));
     }
+
+    // remove tiles which are not inside the current _grid
+    private void ValidateGrid() {
+        // removing tile that are out of bound now
+        List<Vector2Int> toRemove = new List<Vector2Int>();
+        foreach (var tile in _grid) {
+            if (!CellWithInGrid(tile.Key)) {
+                ResetTile(tile.Key);
+                toRemove.Add(tile.Key);
+            }
+        }
+
+        foreach (Vector2Int cellNo in toRemove) {
+            _grid.Remove(cellNo);
+        }
+
+        // adding new tiles to our grid
+        int newTilesAdded = 0 , newObstaclesAdded = 0;
+        for (int i = 0; i < transform.childCount; i++) {
+            GameObject child = transform.GetChild(i).gameObject;
+            TileController tile = child.GetComponent<TileController>();
+            if (tile == null) {
+                continue;
+            }
+
+            List<GameObject> obstacle = new();
+            for (int j = 0; j < tile.transform.childCount; j++) {
+                GameObject tileChild = tile.transform.GetChild(j).gameObject;
+                if (tileChild.CompareTag("Obstacle")) {
+                    obstacle.Add(tileChild);
+                    newObstaclesAdded++;
+                }
+            }
+            _grid.Add(CellNumber(child.transform.position) , new TileInfo(tile , obstacle));
+            newTilesAdded++;
+        }
+
+        Debug.Log($"Validated Grid: current grid count:{_grid.Count} |" +
+                  $" tiles added {newTilesAdded} |" +
+                  $" obstacles added {newObstaclesAdded} |" +
+                  $"removed " + $":{toRemove.Count} |");
+    }
+
+    public void ResetTile(Vector2Int cellNo) {
+        _grid.TryGetValue(cellNo, out TileInfo info);
+        if (info == null) {
+            return;
+        }
+#if UNITY_EDITOR
+        if (info.Tile) {
+            DestroyImmediate(info.Tile.gameObject);
+        }
+
+        foreach (GameObject go in info.Obstacles) {
+            DestroyImmediate(go);
+        }
+#else
+        Destroy(info.tile);
+        foreach (GameObject go in info.obstacles) {
+            Destroy(go);
+        }
+#endif
+    }
+
 
     #region Utils
 
-    // returns grid cell number for a particular world position
+    // returns _grid cell number for a particular world position
     // Note: functino Ignores Height
     // could use scriptable objects for the gridSize handling
     public Vector2Int CellNumber(Vector3 worldPos) {
@@ -73,7 +146,7 @@ public class GridSystem : MonoBehaviour {
     }
 
 
-    // checks if the cell no is valid for current grid size
+    // checks if the cell no is valid for current _grid size
     public bool CellWithInGrid(Vector2 cellNo) {
         if (cellNo.y < 0 || cellNo.y >= gridCols) {
             return false;
@@ -88,14 +161,41 @@ public class GridSystem : MonoBehaviour {
 
 
     // returns tile gameobject from a given cell number
-    public GameObject GetTileFromCellNumber(Vector2 cellNo) {
-        return gridTiles[(int)(cellNo.x * gridRows + cellNo.y)];
+    public TileInfo GetTileInfoOfCellNumber(Vector2 cellNo) {
+        _grid.TryGetValue(TypeConvertor.Vector2ToVector2Int(cellNo), out TileInfo info);
+        if (info != null) {
+            return info;
+        }
+
+        return null;
     }
 
     #endregion
 
 
     #region GridGeneration
+
+    private TileController InstantiateTile(GameObject tilePrefab , Vector3 pos) {
+        TileController spawnedTile = PrefabUtility.InstantiatePrefab(tilePrefab, this
+                .transform)
+            .GetComponent<TileController>();
+        spawnedTile.transform.SetPositionAndRotation(pos, Quaternion.identity);
+        spawnedTile.name = $"cell_{(int)pos.x}_{(int)pos.z}";
+        spawnedTile.tag = TagHandle.GetExistingTag("Tile").ToString();
+
+        return spawnedTile;
+    }
+
+    private List<GameObject> InstantiateObstacles(List<GameObject> obstaclesPrefab, Vector3 pos) {
+        List<GameObject> obstacles = new(obstaclesPrefab.Count);
+        foreach (GameObject ob in obstaclesPrefab) {
+            var obstacle = (GameObject)PrefabUtility.InstantiatePrefab(ob, transform);
+            obstacle.transform.position = pos;
+            obstacles.Add(obstacle);
+        }
+
+        return obstacles;
+    }
 
     public void Generate() {
         Clear();
@@ -107,27 +207,75 @@ public class GridSystem : MonoBehaviour {
             pos.x = i * gridSize;
             for (int j = 0; j < gridCols; j++) {
                 pos.z = j * gridSize;
-                GameObject spawnedTile = Instantiate(gridTilePrefab, this.transform);
-                spawnedTile.transform.SetPositionAndRotation(pos, Quaternion.identity);
-                spawnedTile.name = $"cell_{i}_{j}";
-                spawnedTile.tag = TagHandle.GetExistingTag("Tile").ToString();
-                gridTiles.Add(spawnedTile);
+                var spawnedTile = InstantiateTile(gridTilePrefab , pos);
+                _grid.Add(new((int)pos.x, (int)pos.z), new TileInfo(spawnedTile));
             }
         }
     }
 
 
+    // Editor only
     public void Clear() {
-        foreach (GameObject tile in gridTiles) {
-#if UNITY_EDITOR
-            DestroyImmediate(tile);
-#else
-                Destroy(tile);
-#endif
+        Debug.Log($"Clearing Grid: count {_grid.Count}");
+
+        foreach (var tileInfo in _grid) {
+            ResetTile(tileInfo.Key);
         }
 
-        gridTiles.Clear();
+        for (int i = 0 ; i < transform.childCount ; i++) {
+            GameObject child = transform.GetChild(i).gameObject;
+#if UNITY_EDITOR
+            DestroyImmediate(child);
+#else
+            Destroy(child);
+#endif
+        }
+        _grid.Clear();
+    }
+
+    public void LoadGridFromScriptableObject() {
+        if (_gridData == null) {
+            Debug.LogWarning("grid Data scriptable object is not set");
+            return;
+        }
+
+        // clear current grid and load the new one
+        Clear();
+
+        // getting the saved data
+        var gridData = _gridData.GetGridData();
+        Debug.Log("Loaded Grid successfully");
+
+        // replacing the saved data with new instance of the data
+        foreach (var data in gridData) {
+            var pos =   new Vector3(
+                data.position.x * gridSize ,
+                -1,
+                data.position.y * gridSize);
+
+            var tile = InstantiateTile(data.tilePrefab, pos);
+            List<GameObject> obstacles = InstantiateObstacles(data.obstaclePrefabs, pos);
+
+            _grid[data.position] = new TileInfo(tile.GetComponent<TileController>(), obstacles);
+        }
+    }
+
+    public void SaveGridToScriptableObject() {
+        if (_gridData == null) {
+            Debug.LogWarning("grid Data scriptable object is not set");
+            return;
+        }
+
+        if (_grid == null) {
+            Debug.LogWarning("Can not save null grid to asset");
+            return;
+        }
+
+        if (_gridData.SaveGrid(_grid)) {
+            Debug.Log("Save Grid successfully");
+        }
     }
 
     #endregion
+
 }

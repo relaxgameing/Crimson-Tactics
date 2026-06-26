@@ -8,6 +8,8 @@ public class GridGeneratorEditor : Editor {
     public VisualTreeAsset visualTreeAsset;
     private Button _clearGrid;
     private Button _generateGrid;
+    private Button _loadGridFromScriptableObject;
+    private Button _saveGridToScriptableObject;
 
     private GridSystem _gridSystem;
 
@@ -25,10 +27,13 @@ public class GridGeneratorEditor : Editor {
 
         _generateGrid = custom.Query<Button>("generateGrid");
         _clearGrid = custom.Query<Button>("clearGrid");
+        _loadGridFromScriptableObject = custom.Query<Button>("loadGridFromScriptableObject");
+        _saveGridToScriptableObject = custom.Query<Button>("saveGridToScriptableObject");
 
-        _generateGrid.clicked += () => _gridSystem.Generate();
-        _clearGrid.clicked += () => _gridSystem.Clear();
-
+        _generateGrid.clicked += _gridSystem.Generate;
+        _clearGrid.clicked +=  _gridSystem.Clear;
+        _loadGridFromScriptableObject.clicked += _gridSystem.LoadGridFromScriptableObject;
+        _saveGridToScriptableObject.clicked += _gridSystem.SaveGridToScriptableObject;
         return root;
     }
 }
