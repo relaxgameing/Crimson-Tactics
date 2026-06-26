@@ -20,7 +20,7 @@ public class NormalizeToGridUnit : EditorWindow {
         if (meshRenderer == null) return;
 
         // making sure the object is in unit scale
-        meshRenderer.transform.localScale.Set(1, 1, 1);
+        meshRenderer.transform.localScale = Vector3.one;
 
         Bounds bounds = meshRenderer.bounds;
 
@@ -29,7 +29,7 @@ public class NormalizeToGridUnit : EditorWindow {
         go.transform.localScale = new Vector3(scale, scale, scale);
 
         Transform anchor = meshRenderer.probeAnchor;
-        anchor.position.Scale(Vector3.one * scale);
+        anchor.position *= scale;
 
         meshRenderer.probeAnchor.SetPositionAndRotation(anchor.position, go.transform.rotation);
         EditorUtility.SetDirty(go);
