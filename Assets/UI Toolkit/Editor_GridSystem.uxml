@@ -1,12 +1,10 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements"
-         noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
-         editor-extension-mode="True">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/UI%20Toolkit/Editor_GridSystem_Styles.uss?fileID=7433441132597879392&amp;guid=187ed8580f01643838898e318daa072d&amp;type=3#Editor_GridSystem_Styles"/>
-    <ui:VisualElement name="gridGenerationSection"
-                      style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap;">
-        <ui:Label text="Grid Generation System"
-                  style="-unity-font-style: bold; font-size: 16px; -unity-text-align: middle-left; -unity-text-auto-size: none;"/>
+    <ui:VisualElement name="gridGenerationSection" style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap;">
+        <ui:Label text="Grid Generation System" style="-unity-font-style: bold; font-size: 16px; -unity-text-align: middle-left; -unity-text-auto-size: none;"/>
         <ui:Button text="Generate Grid" name="generateGrid"/>
         <ui:Button text="Clear Grid" name="clearGrid"/>
     </ui:VisualElement>
+    <ui:Button text="load grid from Scriptable Object" name="loadGridFromScriptableObject"/>
+    <ui:Button text="save grid to Scriptable Object" name="saveGridToScriptableObject"/>
 </ui:UXML>
