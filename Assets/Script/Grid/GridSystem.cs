@@ -175,9 +175,8 @@ public class GridSystem : MonoBehaviour {
 
     #region GridGeneration
 
-    private TileController InstantiateTile(GameObject tilePrefab , Vector3 pos) {
-        TileController spawnedTile = PrefabUtility.InstantiatePrefab(tilePrefab, this
-                .transform)
+    private TileController InstantiateTile(GameObject tilePrefab , Transform parent , Vector3 pos) {
+        TileController spawnedTile = PrefabUtility.InstantiatePrefab(tilePrefab, parent)
             .GetComponent<TileController>();
         spawnedTile.transform.SetPositionAndRotation(pos, Quaternion.identity);
         spawnedTile.name = $"cell_{(int)pos.x}_{(int)pos.z}";
@@ -186,10 +185,12 @@ public class GridSystem : MonoBehaviour {
         return spawnedTile;
     }
 
-    private List<GameObject> InstantiateObstacles(List<GameObject> obstaclesPrefab, Vector3 pos) {
+    private List<GameObject> InstantiateObstacles(List<GameObject> obstaclesPrefab, Transform
+            parent ,  Vector3
+        pos) {
         List<GameObject> obstacles = new(obstaclesPrefab.Count);
         foreach (GameObject ob in obstaclesPrefab) {
-            var obstacle = (GameObject)PrefabUtility.InstantiatePrefab(ob, transform);
+            var obstacle = (GameObject)PrefabUtility.InstantiatePrefab(ob, parent);
             obstacle.transform.position = pos;
             obstacles.Add(obstacle);
         }
@@ -207,7 +208,7 @@ public class GridSystem : MonoBehaviour {
             pos.x = i * gridSize;
             for (int j = 0; j < gridCols; j++) {
                 pos.z = j * gridSize;
-                var spawnedTile = InstantiateTile(gridTilePrefab , pos);
+                var spawnedTile = InstantiateTile(gridTilePrefab , transform , pos);
                 _grid.Add(new((int)pos.x, (int)pos.z), new TileInfo(spawnedTile));
             }
         }
@@ -250,11 +251,13 @@ public class GridSystem : MonoBehaviour {
         foreach (var data in gridData) {
             var pos =   new Vector3(
                 data.position.x * gridSize ,
-                -1,
+                data.tilePrefab.transform.position.y,
                 data.position.y * gridSize);
 
-            var tile = InstantiateTile(data.tilePrefab, pos);
-            List<GameObject> obstacles = InstantiateObstacles(data.obstaclePrefabs, pos);
+            var tile = InstantiateTile(data.tilePrefab , transform, pos);
+            List<GameObject> obstacles = InstantiateObstacles(data.obstaclePrefabs,
+                tile.transform ,
+                pos);
 
             _grid[data.position] = new TileInfo(tile.GetComponent<TileController>(), obstacles);
         }
