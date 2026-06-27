@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -112,26 +113,7 @@ public class GridSystem : MonoBehaviour {
                   $"removed " + $":{toRemove.Count} |");
     }
 
-    public void ResetTile(Vector2Int cellNo) {
-        _grid.TryGetValue(cellNo, out TileInfo info);
-        if (info == null) {
-            return;
-        }
-#if UNITY_EDITOR
-        if (info.Tile) {
-            DestroyImmediate(info.Tile.gameObject);
-        }
 
-        foreach (GameObject go in info.Obstacles) {
-            DestroyImmediate(go);
-        }
-#else
-        Destroy(info.tile);
-        foreach (GameObject go in info.obstacles) {
-            Destroy(go);
-        }
-#endif
-    }
 
 
     #region Utils
@@ -168,6 +150,37 @@ public class GridSystem : MonoBehaviour {
         }
 
         return null;
+    }
+
+    public bool IsCellOccupied(Vector2Int cell) {
+        var info = _grid[cell];
+        // if cell is null means that it is not valid so it would not allow anything to be placed
+        if (info == null) {
+            return true;
+        }
+
+        return info.isOccupied;
+    }
+
+    public void ResetTile(Vector2Int cellNo) {
+        _grid.TryGetValue(cellNo, out TileInfo info);
+        if (info == null) {
+            return;
+        }
+#if UNITY_EDITOR
+        if (info.Tile) {
+            DestroyImmediate(info.Tile.gameObject);
+        }
+
+        foreach (GameObject go in info.Obstacles) {
+            DestroyImmediate(go);
+        }
+#else
+        Destroy(info.tile);
+        foreach (GameObject go in info.obstacles) {
+            Destroy(go);
+        }
+#endif
     }
 
     #endregion
@@ -281,4 +294,26 @@ public class GridSystem : MonoBehaviour {
 
     #endregion
 
+    #region GridEditorTool
+
+    public void UpdateGridChanges( Vector2Int cell , List<ObstaclesChange> changes) {
+        if (!_grid.ContainsKey(cell)) {
+            return;
+        }
+
+        var info = _grid[cell];
+        foreach (ObstaclesChange change in changes) {
+            switch (change.op) {
+                case GridOperation.Adding:
+                    break;
+                case GridOperation.Removing:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+
+
+    #endregion
 }
