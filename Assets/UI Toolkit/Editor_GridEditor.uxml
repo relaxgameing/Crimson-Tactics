@@ -10,5 +10,6 @@
             </Bindings>
         </ui:EnumField>
         <ui:Button text="Confirm Placment" name="confirmPlacement"/>
+        <ui:Button text="Discard Placement" name="discardChanges"/>
     </ui:VisualElement>
 </ui:UXML>
