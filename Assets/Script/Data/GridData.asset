@@ -58,7 +58,8 @@ MonoBehaviour:
     obstaclePrefabs: []
   - position: {x: 1, y: 6}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 1, y: 7}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
@@ -67,22 +68,26 @@ MonoBehaviour:
     obstaclePrefabs: []
   - position: {x: 2, y: 1}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 2, y: 2}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
   - position: {x: 2, y: 3}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 2, y: 4}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
   - position: {x: 2, y: 5}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 2, y: 6}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 2, y: 7}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
@@ -115,7 +120,8 @@ MonoBehaviour:
     obstaclePrefabs: []
   - position: {x: 4, y: 1}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 4, y: 2}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
@@ -127,7 +133,8 @@ MonoBehaviour:
     obstaclePrefabs: []
   - position: {x: 4, y: 5}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 4, y: 6}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
@@ -154,7 +161,8 @@ MonoBehaviour:
     obstaclePrefabs: []
   - position: {x: 5, y: 6}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 5, y: 7}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
@@ -163,22 +171,27 @@ MonoBehaviour:
     obstaclePrefabs: []
   - position: {x: 6, y: 1}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 6, y: 2}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 6, y: 3}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 6, y: 4}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
   - position: {x: 6, y: 5}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 6, y: 6}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
-    obstaclePrefabs: []
+    obstaclePrefabs:
+    - {fileID: 919132149155446097, guid: 47fae6a35f09844b99f40bdafd22ef89, type: 3}
   - position: {x: 6, y: 7}
     tilePrefab: {fileID: 7064440585713472295, guid: 06d9c15df5ce04aa594225c214c621b2, type: 3}
     obstaclePrefabs: []
