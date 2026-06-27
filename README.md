@@ -14,7 +14,13 @@ https://github.com/user-attachments/assets/e6ec7936-d695-489d-9066-bcd3f3293fd9
 An editor tool to select any prefab and be able to place it on top of any selected tile of the grid.
 an also choose a particular type of grid tile by selecting the tag
 
-https://github.com/user-attachments/assets/d4eea503-e90f-4b5d-b1cb-a18d5d0156b3
+https://github.com/user-attachments/assets/8b9efb98-ecde-4a73-b6a2-db6fa4b81b73
+
+
+We could also remove already placed assets and could confirm or discard any edits that are made
+
+https://github.com/user-attachments/assets/79d5e897-c885-4a8c-bb78-2c7db33e15b6
+
 
 
 ## Player Pathfinding
