@@ -14,7 +14,6 @@ public class MoverComponent : MonoBehaviour {
     [SerializeField] private float rotationSpeed = 0.2f;
     [SerializeField] private Vector3 lookAt = Vector3.forward;
     [SerializeField] private Color pathColor = Color.indianRed;
-    [SerializeField] private bool isIndependentOfSimulationState = true;
     private PathFinder _pathFinder;
 
     private List<TileController> _pathToTake;

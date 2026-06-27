@@ -17,7 +17,7 @@ public class GridSystem : MonoBehaviour {
     [SerializeField] private GameObject gridTilePrefab;
     [SerializeField] private GridData _gridData;
 
-    private Dictionary<Vector2Int, TileInfo> _grid = new();
+    private Dictionary<Vector2Int, TileInfo> _grid = new() ;
 
     public Vector2 GridDimension => new Vector2(gridRows, gridCols);
 
@@ -31,7 +31,6 @@ public class GridSystem : MonoBehaviour {
                 if (_instance is null) {
                     GameObject obj = new("GridSystem");
                     _instance = obj.AddComponent<GridSystem>();
-                    DontDestroyOnLoad(obj);
                 }
             }
 
@@ -39,21 +38,22 @@ public class GridSystem : MonoBehaviour {
         }
     }
 
-    private void Awake() {
+    private void Start() {
+        // we need to sync the grid when the game starts because the _grid is not
+        // passed from the editor to play mode as Dictionary is not serializable by unity
+        _grid.Clear();
+        SyncGrid();
+
         Debug.Log(_grid.Count);
     }
 
     private void OnValidate() {
+        // this ensures that we dont do any kind of editor stuff when playing
+        if (Application.isPlaying) {
+            return;
+        }
         if (_grid == null) {
             _grid = new();
-        }
-
-        // making sure we have the reference to all the tiles objects currently
-        // present in the scene
-        // as if counts are not equal it means there is some miss match between the
-        // current _grid and scene objects
-        if (_grid.Count != transform.childCount) {
-            ValidateGrid();
         }
 
         if (_gridData == null) {
@@ -73,7 +73,7 @@ public class GridSystem : MonoBehaviour {
 
     // remove tiles which are not inside the current _grid and store the current
     // state of the grid including the modification made by the editor
-    public void ValidateGrid() {
+    public void SyncGrid() {
         // removing tile that are out of bound now
         List<Vector2Int> toRemove = new List<Vector2Int>();
         foreach (var tile in _grid) {
@@ -271,7 +271,7 @@ public class GridSystem : MonoBehaviour {
             List<GameObject> obstacles = InstantiateObstacles(data.obstaclePrefabs,
                 tile.transform);
 
-            _grid[data.position] = new TileInfo(tile.GetComponent<TileController>(), obstacles);
+            _grid[data.position] = new TileInfo(tile, obstacles);
         }
     }
 
@@ -286,6 +286,7 @@ public class GridSystem : MonoBehaviour {
             return;
         }
 
+        SyncGrid();
         if (_gridData.SaveGrid(_grid)) {
             Debug.Log("Save Grid successfully");
         }
@@ -296,6 +297,11 @@ public class GridSystem : MonoBehaviour {
     #region GridEditorTool
 
     public void UpdateGridChanges( Vector2Int cell , Stack<ObstaclesChange> changes) {
+        if (Application.isPlaying) {
+            Debug.LogWarning("UpdateGridChanges should'nt be call in playmode");
+            return;
+        }
+
         if (!_grid.TryGetValue(cell, out TileInfo info)) {
             return;
         }

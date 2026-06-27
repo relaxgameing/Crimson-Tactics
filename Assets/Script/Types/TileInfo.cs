@@ -28,8 +28,4 @@ public class TileInfo {
             Obstacles = new();
         }
     }
-
-    public void ClearInfo() {
-
-    }
 }

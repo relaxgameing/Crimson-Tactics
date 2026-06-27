@@ -4,7 +4,8 @@
         <ui:Label text="Grid Generation System" style="-unity-font-style: bold; font-size: 16px; -unity-text-align: middle-left; -unity-text-auto-size: none;"/>
         <ui:Button text="Generate Grid" name="generateGrid"/>
         <ui:Button text="Clear Grid" name="clearGrid"/>
+        <ui:Button text="load grid from Scriptable Object" name="loadGridFromScriptableObject"/>
+        <ui:Button text="save grid to Scriptable Object" name="saveGridToScriptableObject"/>
     </ui:VisualElement>
-    <ui:Button text="load grid from Scriptable Object" name="loadGridFromScriptableObject"/>
-    <ui:Button text="save grid to Scriptable Object" name="saveGridToScriptableObject"/>
+    <ui:ListView/>
 </ui:UXML>
