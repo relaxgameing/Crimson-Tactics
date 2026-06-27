@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -189,7 +188,6 @@ public class GridEditorWindow : EditorWindow {
             Debug.Log($"Confirming Changes for cell {changes.Key}");
             _gridSystem.UpdateGridChanges(changes.Key, changes.Value);
         }
-        _gridSystem.ValidateGrid();
         _gridSystem.SaveGridToScriptableObject();
         _changes.Clear();
     }
