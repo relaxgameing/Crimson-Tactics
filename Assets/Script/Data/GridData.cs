@@ -72,7 +72,7 @@ public class GridData : ScriptableObject
         return cells;
     }
 
-    GameObject GetPrefab(GameObject ob) {
+    public static GameObject GetPrefab(GameObject ob) {
         if (ob == null) {
             return null;
         }

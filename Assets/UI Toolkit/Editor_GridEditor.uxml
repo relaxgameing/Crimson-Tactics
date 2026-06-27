@@ -1,14 +1,14 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements"
-         noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
-         editor-extension-mode="True">
-    <ui:VisualElement name="gridEditorSection"
-                      style="flex-grow: 2; margin-top: 2%; margin-bottom: 2%;">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="gridEditorSection" style="flex-grow: 2; margin-top: 2%; margin-bottom: 2%;">
         <ui:Label text="Grid Edit Section" style="font-size: 16px; -unity-font-style: bold;"/>
-        <uie:ObjectField label="asset to place" name="selectedPlacementAsset"
-                         type="UnityEngine.GameObject, UnityEngine.CoreModule"/>
+        <uie:ObjectField label="asset to place" name="selectedPlacementAsset" type="UnityEngine.GameObject, UnityEngine.CoreModule"/>
         <uie:TagField label="Tag" value="Tile" name="targetGridTag"/>
-        <ui:Button text="Start Editing Grid" name="startEditingGrid"
-                   style="-unity-font-style: bold;"/>
+        <ui:Button text="Start Editing Grid" name="startEditingGrid" icon-image="project://database/Assets/TileSet/isometric%20tileset/kenney_platformer-kit/Previews/block-grass-low-large.png?fileID=2800000&amp;guid=d088453c2e9bd4305a2795d4b5c81427&amp;type=3#block-grass-low-large" style="-unity-font-style: bold;"/>
+        <ui:EnumField label="Operation Mode" value="Adding" type="GridOperation, Assembly-CSharp" name="operationMode">
+            <Bindings>
+                <ui:DataBinding property="value" data-source-path="curMode" data-source-type="GridEditorWindow, Assembly-CSharp-Editor" binding-mode="TwoWay"/>
+            </Bindings>
+        </ui:EnumField>
         <ui:Button text="Confirm Placment" name="confirmPlacement"/>
     </ui:VisualElement>
 </ui:UXML>
