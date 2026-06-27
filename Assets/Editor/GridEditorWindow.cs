@@ -74,7 +74,7 @@ public class GridEditorWindow : EditorWindow {
 
             var dimension= _gridSystem.GridDimension;
             ChangeSceneView(new Vector3( dimension.x / 2 , 8 , dimension.y / 2) ,
-                Quaternion.Euler(90 , 0 , 0) );
+                Quaternion.Euler(90 , 0 , 90) );
         }
         else {
             _confirmPlacement.visible = false;
