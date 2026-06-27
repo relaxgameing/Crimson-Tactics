@@ -14,7 +14,7 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     [SerializeField] private Color pointerColor = Color.white;
     private Outline _outlineComponent;
 
-    public Vector2 CellNo => GridSystem.Instance.CellNumber(this.transform.position);
+    public Vector2Int CellNo => GridSystem.Instance.CellNumber(this.transform.position);
 
     // the number of entity has this tile on focus
     private HashSet<int> _InFocus;

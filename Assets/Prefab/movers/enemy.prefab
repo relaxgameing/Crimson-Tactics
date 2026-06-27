@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -65,6 +65,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7303786729595710598}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4510190439541194599}
   m_SourcePrefab: {fileID: 100100000, guid: 45a9aeb9dd4b34562b2a84f4b49a1d2c, type: 3}
 --- !u!1 &5419449936390901786 stripped
 GameObject:
@@ -113,8 +116,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efe81ba040344f719d0f908b918cbd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AStarPathFinderComponent
+  movementDirection: {x: 0, y: 0}
   movementDirections:
   - {x: 0, y: 1}
   - {x: 0, y: -1}
   - {x: -1, y: 0}
   - {x: 1, y: 0}
+--- !u!136 &4510190439541194599
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5419449936390901786}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.16
+  m_Height: 0.7
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.35, z: 0}

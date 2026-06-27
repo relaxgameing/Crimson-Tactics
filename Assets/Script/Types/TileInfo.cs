@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -8,7 +10,8 @@ public class TileInfo {
 
     public List<GameObject> Obstacles { get; private set; }
 
-    public bool isOccupied => Obstacles != null && Obstacles.Count > 0;
+    public bool isOccupied => Obstacles != null && Obstacles.Count > 0 && Obstacles.Any(val =>
+        val.activeInHierarchy && val.CompareTag("Obstacle")) ;
 
     public Vector2Int cellNo => new(Mathf.FloorToInt(Tile.transform.position.x),
         Mathf.FloorToInt(Tile.transform.position.z));
@@ -21,6 +24,9 @@ public class TileInfo {
     public TileInfo(TileController tile, List<GameObject> obstacles) {
         this.Tile = tile;
         this.Obstacles = obstacles;
+        if (obstacles == null) {
+            Obstacles = new();
+        }
     }
 
     public void ClearInfo() {

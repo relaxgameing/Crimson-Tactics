@@ -32,7 +32,7 @@ public class GridEditorWindow : EditorWindow {
     private Button _startEditingBtn;
 
     // current changes made to the scene
-    private Dictionary<Vector2Int, List<ObstaclesChange>> _changes = new();
+    private Dictionary<Vector2Int, Stack<ObstaclesChange>> _changes = new();
 
     [CreateProperty] public GridOperation curMode = GridOperation.Adding;
 
@@ -61,7 +61,6 @@ public class GridEditorWindow : EditorWindow {
         _discardPlacement = root.Query<Button>("discardChanges").First();
 
 
-
         _assetSelectedForPlacement.RegisterValueChangedCallback(HandleObstacleValueChange);
         _startEditingBtn.clicked += HandleStartEditing;
 
@@ -80,37 +79,39 @@ public class GridEditorWindow : EditorWindow {
             return;
         }
 
-
+        // if an gameobject is selected currently
         GameObject tileSelected = Selection.activeGameObject;
         if (tileSelected.IsUnityNull()) {
             return;
         }
 
-        var cellNo = _gridSystem.CellNumber(tileSelected.transform.position);
-        var tileInfo = _gridSystem.GetTileInfoOfCellNumber(cellNo);
+        // get information about it
+        var curCellNo = _gridSystem.CellNumber(tileSelected.transform.position);
+        Debug.Log($"selected number {curCellNo}");
+        var curTileInfo = _gridSystem.GetTileInfoOfCellNumber(curCellNo);
         // means tile is not valid
-        if (tileInfo == null || tileInfo.Tile == null ||  !tileInfo.Tile.CompareTag(_gridTag
-            .value)) {
+        if (curTileInfo == null || curTileInfo.Tile == null || !curTileInfo.Tile.CompareTag(_gridTag
+                .value)) {
             return;
         }
 
-        if (!_changes.ContainsKey(cellNo)) {
-            _changes[cellNo] = new();
+        if (!_changes.ContainsKey(curCellNo)) {
+            _changes[curCellNo] = new();
         }
 
-
+        var lastChange = _changes[curCellNo].Count > 0 ? _changes[curCellNo].Peek() : null;
         switch (curMode) {
             case GridOperation.Adding:
                 if (_placementAsset == null) {
                     EditorUtility.DisplayDialog("Operation Invalid", "Select a prefab before " +
-                        "editing grid" , "understood");
+                        "editing grid", "understood");
                     break;
                 }
+
                 // we are checking the grid and also the changes we have made so far but not yet
                 // commited
-                if (tileInfo.isOccupied ||
-                    _changes[cellNo].Find(val => val.op == GridOperation
-                        .Adding) != null) {
+                if (curTileInfo.isOccupied || (lastChange != null && lastChange.op == GridOperation
+                        .Adding)) {
                     Debug.Log("Cannot place asset , tile is occupied remove the asset first");
                     break;
                 }
@@ -123,7 +124,9 @@ public class GridEditorWindow : EditorWindow {
                     break;
                 }
 
-                AddObstacleChangeAt(cellNo, new ObstaclesChange(
+                prefabInstance.tag = TagHandle.GetExistingTag("Obstacle").ToString();
+
+                AddObstacleChangeAt(curCellNo, new ObstaclesChange(
                     _placementAsset,
                     prefabInstance,
                     curMode
@@ -132,38 +135,41 @@ public class GridEditorWindow : EditorWindow {
 
                 break;
             case GridOperation.Removing:
-
-                if (!tileInfo.isOccupied && _changes[cellNo].Find(val => val.op == GridOperation
-                        .Adding) == null) {
+                // tile should have an obstacle and the last operation perform we have added an
+                // obstacle
+                if (!curTileInfo.isOccupied &&
+                    (lastChange != null && lastChange.op == GridOperation.Removing)) {
                     Debug.Log("No Obstacle to Remove");
                     break;
                 }
 
-                foreach (GameObject ob in tileInfo.Obstacles) {
-                    // means already removed temporarily
-                    if (!ob.activeInHierarchy) {
-                        continue;
+                // this means we are removing save obstacle
+                if (lastChange == null) {
+                    foreach (GameObject ob in curTileInfo.Obstacles) {
+                        // means already removed temporarily
+                        if (!ob.activeInHierarchy || !ob.CompareTag("Obstacle")) {
+                            continue;
+                        }
+
+                        ob.SetActive(false);
+                        AddObstacleChangeAt(curCellNo, new ObstaclesChange(
+                            GridData.GetPrefab(ob),
+                            ob,
+                            curMode
+                        ));
                     }
 
-                    ob.SetActive(false);
-                    AddObstacleChangeAt(cellNo, new ObstaclesChange(
-                        GridData.GetPrefab(ob),
-                        ob,
-                        curMode
-                    ));
+                    // we can skip this last part for case where we are removing saved obstacle
+                    break;
                 }
 
-                // removing the last add operation
-                var lastAddOp = _changes[cellNo].FindLast(val => val.op == GridOperation
-                    .Adding);
-                _changes[cellNo].Remove(lastAddOp);
 
+                _changes[curCellNo].Pop();
 #if UNITY_EDITOR
-                DestroyImmediate(lastAddOp.instance);
+                DestroyImmediate(lastChange.instance);
 #else
                 Destroy(lastAddOp.instance);
 #endif
-
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -175,35 +181,7 @@ public class GridEditorWindow : EditorWindow {
             _changes[cellNo] = new();
         }
 
-        _changes[cellNo].Add(change);
-    }
-
-    private void RemoveLastObstacleChangeAt(Vector2Int cellNo) {
-        var changes = _changes[cellNo];
-        if (changes == null || changes.Count == 0) {
-            return;
-        }
-
-        changes.RemoveAt(changes.Count - 1);
-    }
-
-
-    private void RemoveObstacleChangeAt(Vector2Int cellNo, ObstaclesChange change) {
-        var changes = _changes[cellNo];
-        if (changes == null) {
-            return;
-        }
-
-        int idx = _changes[cellNo].FindIndex(
-            (obstaclesChange =>
-                obstaclesChange.instance == change.instance &&
-                obstaclesChange.op == change.op));
-
-        if (idx == -1) {
-            return;
-        }
-
-        _changes[cellNo].RemoveAt(idx);
+        _changes[cellNo].Push(change);
     }
 
     private void HandleConfirmPlacement() {
@@ -211,8 +189,9 @@ public class GridEditorWindow : EditorWindow {
             Debug.Log($"Confirming Changes for cell {changes.Key}");
             _gridSystem.UpdateGridChanges(changes.Key, changes.Value);
         }
-
         _gridSystem.ValidateGrid();
+        _gridSystem.SaveGridToScriptableObject();
+        _changes.Clear();
     }
 
     private void HandleDiscardPlacement() {
@@ -261,12 +240,13 @@ public class GridEditorWindow : EditorWindow {
         }
 
         GameObject val = (GameObject)evt.newValue;
-        if ( !PrefabUtility.IsPartOfPrefabAsset(val)) {
-            EditorUtility.DisplayDialog("Not Valid Prefab" , "Selected object is not a active " +
-                "prefab instance" , "change prefab");
+        if (!PrefabUtility.IsPartOfPrefabAsset(val)) {
+            EditorUtility.DisplayDialog("Not Valid Prefab", "Selected object is not a active " +
+                                                            "prefab instance", "change prefab");
             _assetSelectedForPlacement.value = null;
             return;
         }
+
         // NormalizeToGridUnit.NormalizeToOneUnit(val);
         _placementAsset = val;
         Debug.Log("Setting " + val.name + " as placement asset");

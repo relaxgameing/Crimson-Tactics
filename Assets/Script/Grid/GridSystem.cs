@@ -71,7 +71,8 @@ public class GridSystem : MonoBehaviour {
 
     }
 
-    // remove tiles which are not inside the current _grid
+    // remove tiles which are not inside the current _grid and store the current
+    // state of the grid including the modification made by the editor
     public void ValidateGrid() {
         // removing tile that are out of bound now
         List<Vector2Int> toRemove = new List<Vector2Int>();
@@ -103,7 +104,7 @@ public class GridSystem : MonoBehaviour {
                     newObstaclesAdded++;
                 }
             }
-            _grid.Add(CellNumber(child.transform.position) , new TileInfo(tile , obstacle));
+            _grid[tile.CellNo] = new TileInfo(tile, obstacle);
             newTilesAdded++;
         }
 
@@ -191,7 +192,8 @@ public class GridSystem : MonoBehaviour {
     private TileController InstantiateTile(GameObject tilePrefab , Transform parent , Vector3 pos) {
         TileController spawnedTile = PrefabUtility.InstantiatePrefab(tilePrefab, parent)
             .GetComponent<TileController>();
-        spawnedTile.transform.SetPositionAndRotation(pos, Quaternion.identity);
+        spawnedTile.transform.SetPositionAndRotation(pos + tilePrefab.transform.position, Quaternion
+            .identity);
         spawnedTile.name = $"cell_{(int)pos.x}_{(int)pos.z}";
         spawnedTile.tag = TagHandle.GetExistingTag("Tile").ToString();
 
@@ -199,12 +201,10 @@ public class GridSystem : MonoBehaviour {
     }
 
     private List<GameObject> InstantiateObstacles(List<GameObject> obstaclesPrefab, Transform
-            parent ,  Vector3
-        pos) {
+            parent ) {
         List<GameObject> obstacles = new(obstaclesPrefab.Count);
         foreach (GameObject ob in obstaclesPrefab) {
             var obstacle = (GameObject)PrefabUtility.InstantiatePrefab(ob, parent);
-            obstacle.transform.position = pos;
             obstacles.Add(obstacle);
         }
 
@@ -264,13 +264,12 @@ public class GridSystem : MonoBehaviour {
         foreach (var data in gridData) {
             var pos =   new Vector3(
                 data.position.x * gridSize ,
-                data.tilePrefab.transform.position.y,
+                0,
                 data.position.y * gridSize);
 
             var tile = InstantiateTile(data.tilePrefab , transform, pos);
             List<GameObject> obstacles = InstantiateObstacles(data.obstaclePrefabs,
-                tile.transform ,
-                pos);
+                tile.transform);
 
             _grid[data.position] = new TileInfo(tile.GetComponent<TileController>(), obstacles);
         }
@@ -296,7 +295,7 @@ public class GridSystem : MonoBehaviour {
 
     #region GridEditorTool
 
-    public void UpdateGridChanges( Vector2Int cell , List<ObstaclesChange> changes) {
+    public void UpdateGridChanges( Vector2Int cell , Stack<ObstaclesChange> changes) {
         if (!_grid.TryGetValue(cell, out TileInfo info)) {
             return;
         }
@@ -310,6 +309,11 @@ public class GridSystem : MonoBehaviour {
                     break;
                 case GridOperation.Removing:
                     tempInfo.Obstacles.Remove(change.instance);
+#if UNITY_EDITOR
+                    DestroyImmediate(change.instance);
+#else
+                    Destroy(change.instance);
+#endif
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
