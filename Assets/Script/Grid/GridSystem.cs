@@ -72,7 +72,7 @@ public class GridSystem : MonoBehaviour {
     }
 
     // remove tiles which are not inside the current _grid
-    private void ValidateGrid() {
+    public void ValidateGrid() {
         // removing tile that are out of bound now
         List<Vector2Int> toRemove = new List<Vector2Int>();
         foreach (var tile in _grid) {
@@ -297,21 +297,27 @@ public class GridSystem : MonoBehaviour {
     #region GridEditorTool
 
     public void UpdateGridChanges( Vector2Int cell , List<ObstaclesChange> changes) {
-        if (!_grid.ContainsKey(cell)) {
+        if (!_grid.TryGetValue(cell, out TileInfo info)) {
             return;
         }
 
-        var info = _grid[cell];
+        // we will go throught the sequence of change and get the last value persistant at the end
+        TileInfo tempInfo = new(info.Tile);
         foreach (ObstaclesChange change in changes) {
             switch (change.op) {
                 case GridOperation.Adding:
+                    tempInfo.Obstacles.Add(change.instance);
                     break;
                 case GridOperation.Removing:
+                    tempInfo.Obstacles.Remove(change.instance);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        // inserting new fresh data
+        _grid[cell] = tempInfo;
     }
 
 

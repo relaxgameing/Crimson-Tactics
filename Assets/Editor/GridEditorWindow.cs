@@ -196,12 +196,13 @@ public class GridEditorWindow : EditorWindow {
         _changes[cellNo].RemoveAt(idx);
     }
 
-    // not implemented yet
     private void HandleConfirmPlacement() {
         foreach (var changes in _changes) {
             Debug.Log($"Confirming Changes for cell {changes.Key}");
             _gridSystem.UpdateGridChanges(changes.Key, changes.Value);
         }
+
+        _gridSystem.ValidateGrid();
     }
 
     private void HandleStartEditing() {
