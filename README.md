@@ -14,7 +14,11 @@ https://github.com/user-attachments/assets/e6ec7936-d695-489d-9066-bcd3f3293fd9
 An editor tool to select any prefab and be able to place it on top of any selected tile of the grid.
 an also choose a particular type of grid tile by selecting the tag
 
-https://github.com/user-attachments/assets/8b9efb98-ecde-4a73-b6a2-db6fa4b81b73
+
+
+https://github.com/user-attachments/assets/f20d7d6e-0462-43d7-9f24-7fdb205639ed
+
+
 
 
 We could also remove already placed assets and could confirm or discard any edits that are made
