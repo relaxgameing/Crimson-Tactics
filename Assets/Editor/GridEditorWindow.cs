@@ -80,7 +80,8 @@ public class GridEditorWindow : EditorWindow {
         var cellNo = _gridSystem.CellNumber(tileSelected.transform.position);
         var tileInfo = _gridSystem.GetTileInfoOfCellNumber(cellNo);
         // means tile is not valid
-        if (tileInfo == null) {
+        if (tileInfo == null || tileInfo.Tile == null ||  !tileInfo.Tile.CompareTag(_gridTag
+            .value)) {
             return;
         }
 
