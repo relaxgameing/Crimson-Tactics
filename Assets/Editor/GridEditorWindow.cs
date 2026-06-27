@@ -14,10 +14,14 @@ using Object = UnityEngine.Object;
 public class GridEditorWindow : EditorWindow {
     // the asset selected by the player
     private ObjectField _assetSelectedForPlacement;
-    private Button _confirmPlacement; // doesnt do anything till now
     // can be selected by the player to allow placements on grid with this specific tag
     private TagField _gridTag;
+
+    // section which should only be visible when editing
+    private VisualElement _editingSection;
     private EnumField _opMode;
+    private Button _confirmPlacement; // doesnt do anything till now
+    private Button _discardPlacement;
 
     // the grid system which will be modified
     private GridSystem _gridSystem;
@@ -53,16 +57,21 @@ public class GridEditorWindow : EditorWindow {
         _assetSelectedForPlacement = root.Query<ObjectField>("selectedPlacementAsset").First();
         _gridTag = root.Query<TagField>("targetGridTag").First();
         _opMode = root.Query<EnumField>("operationMode").First();
+        _editingSection = root.Query<VisualElement>("editingSection").First();
+        _discardPlacement = root.Query<Button>("discardChanges").First();
+
+
 
         _assetSelectedForPlacement.RegisterValueChangedCallback(HandleObstacleValueChange);
         _startEditingBtn.clicked += HandleStartEditing;
 
         _confirmPlacement.clicked += HandleConfirmPlacement;
-        _confirmPlacement.visible = false;
-
+        _discardPlacement.clicked += HandleDiscardPlacement;
 
         _opMode.dataSource = this;
     }
+
+
 
 
     private void OnSelectionChange() {
@@ -206,19 +215,24 @@ public class GridEditorWindow : EditorWindow {
         _gridSystem.ValidateGrid();
     }
 
+    private void HandleDiscardPlacement() {
+        _gridSystem.LoadGridFromScriptableObject();
+        _changes.Clear();
+    }
+
     private void HandleStartEditing() {
         _isEditing = !_isEditing;
 
         if (_isEditing) {
-            _confirmPlacement.visible = true;
             _startEditingBtn.text = "Stop Editing";
+            _editingSection.visible = true;
 
             var dimension = _gridSystem.GridDimension;
             ChangeSceneView(new Vector3(dimension.x / 2, 8, dimension.y / 2),
                 Quaternion.Euler(90, 0, 90));
         }
         else {
-            _confirmPlacement.visible = false;
+            _editingSection.visible = false;
             _startEditingBtn.text = "Start Editing";
 
             var dimension = _gridSystem.GridDimension;
