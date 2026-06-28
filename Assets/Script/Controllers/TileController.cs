@@ -7,10 +7,6 @@ using UnityEngine.EventSystems;
 
 public class TileController : MonoBehaviour, IPointerEnterHandler,
     IPointerExitHandler, IInteractable {
-    // to perform any kind of interaction we want to the entity entered the tile
-    [SerializeField] private BoxCollider interactionArea;
-    // tile only interact with things which has this tag
-    [SerializeField] private string interactionTag;
     [SerializeField] private Color pointerColor = Color.white;
     private Outline _outlineComponent;
 
@@ -31,10 +27,6 @@ public class TileController : MonoBehaviour, IPointerEnterHandler,
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        // var hit = eventData.pointerCurrentRaycast.gameObject;
-        //
-        // Debug.Log(hit.name);
-        // Debug.Log(LayerMask.LayerToName(hit.layer));
         AddFocus(_pointerID , pointerColor);
         GameModeController.Instance.SetSelectedTile(this);
     }
