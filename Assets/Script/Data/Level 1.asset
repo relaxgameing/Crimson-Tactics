@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf7841a0687e43f19503a645aa361d2d, type: 3}
-  m_Name: GridData
+  m_Name: Level 1
   m_EditorClassIdentifier: Assembly-CSharp::GridData
   cells:
   - position: {x: 0, y: 0}

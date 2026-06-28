@@ -17,7 +17,7 @@ public class GridSystem : MonoBehaviour {
     [SerializeField] private GameObject gridTilePrefab;
     [SerializeField] private GridData _gridData;
 
-    private Dictionary<Vector2Int, TileInfo> _grid = new() ;
+    private Dictionary<Vector2Int, TileInfo> _grid = new();
 
     public Vector2 GridDimension => new Vector2(gridRows, gridCols);
 
@@ -47,48 +47,14 @@ public class GridSystem : MonoBehaviour {
         Debug.Log(_grid.Count);
     }
 
-    private void OnValidate() {
-        // this ensures that we dont do any kind of editor stuff when playing
-        if (Application.isPlaying) {
-            return;
-        }
-        if (_grid == null) {
-            _grid = new();
-        }
 
-        if (_gridData == null) {
-            Debug.LogError("_grid system not attached to scriptable Object");
-        }
-
-        if (gridTilePrefab == null) {
-            Debug.LogError("_grid Tile prefab not set");
-        }
-        else {
-            if (gridTilePrefab.GetComponent<TileController>().IsUnityNull()) {
-                Debug.LogError("provided prefab doesnt have TileController");
-            }
-        }
-
-    }
-
-    // remove tiles which are not inside the current _grid and store the current
-    // state of the grid including the modification made by the editor
+    // it updates the _grid with the current state of the scene
     public void SyncGrid() {
-        // removing tile that are out of bound now
-        List<Vector2Int> toRemove = new List<Vector2Int>();
-        foreach (var tile in _grid) {
-            if (!CellWithInGrid(tile.Key)) {
-                ResetTile(tile.Key);
-                toRemove.Add(tile.Key);
-            }
-        }
+        // clear the current stale _grid
+        _grid.Clear();
 
-        foreach (Vector2Int cellNo in toRemove) {
-            _grid.Remove(cellNo);
-        }
-
-        // adding new tiles to our grid
-        int newTilesAdded = 0 , newObstaclesAdded = 0;
+        // adding current tiles to our grid
+        int newTilesAdded = 0, newObstaclesAdded = 0;
         for (int i = 0; i < transform.childCount; i++) {
             GameObject child = transform.GetChild(i).gameObject;
             TileController tile = child.GetComponent<TileController>();
@@ -104,17 +70,15 @@ public class GridSystem : MonoBehaviour {
                     newObstaclesAdded++;
                 }
             }
+
             _grid[tile.CellNo] = new TileInfo(tile, obstacle);
             newTilesAdded++;
         }
 
-        Debug.Log($"Validated Grid: current grid count:{_grid.Count} |" +
+        Debug.Log($"Synced Grid: current grid count:{_grid.Count} |" +
                   $" tiles added {newTilesAdded} |" +
-                  $" obstacles added {newObstaclesAdded} |" +
-                  $"removed " + $":{toRemove.Count} |");
+                  $" obstacles added {newObstaclesAdded} |");
     }
-
-
 
 
     #region Utils
@@ -143,7 +107,7 @@ public class GridSystem : MonoBehaviour {
     }
 
 
-    // returns tile gameobject from a given cell number
+    // returns tile game object from a given cell number
     public TileInfo GetTileInfoOfCellNumber(Vector2 cellNo) {
         _grid.TryGetValue(TypeConvertor.Vector2ToVector2Int(cellNo), out TileInfo info);
         if (info != null) {
@@ -153,43 +117,46 @@ public class GridSystem : MonoBehaviour {
         return null;
     }
 
-    public bool IsCellOccupied(Vector2Int cell) {
-        var info = _grid[cell];
-        // if cell is null means that it is not valid so it would not allow anything to be placed
-        if (info == null) {
-            return true;
-        }
-
-        return info.isOccupied;
-    }
-
-    public void ResetTile(Vector2Int cellNo) {
-        _grid.TryGetValue(cellNo, out TileInfo info);
-        if (info == null) {
-            return;
-        }
-#if UNITY_EDITOR
-        if (info.Tile) {
-            DestroyImmediate(info.Tile.gameObject);
-        }
-
-        foreach (GameObject go in info.Obstacles) {
-            DestroyImmediate(go);
-        }
-#else
-        Destroy(info.tile);
-        foreach (GameObject go in info.obstacles) {
-            Destroy(go);
-        }
-#endif
-    }
-
     #endregion
 
 
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// EDITOR SECTION ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+#if UNITY_EDITOR
+
+    private void OnValidate() {
+        // this ensures that we dont do any kind of editor stuff when playing
+        if (EditorApplication.isPlayingOrWillChangePlaymode) {
+            return;
+        }
+
+        if (_grid == null) {
+            _grid = new();
+        }
+
+        if (_grid.Count != transform.childCount ) {
+            Debug.Log($"Syncing Grid in Editor as _grid.count:{_grid.Count} != child " +
+                $"count:{transform.childCount}");
+            SyncGrid();
+        }
+
+        if (_gridData == null) {
+            Debug.LogError("_grid system not attached to scriptable Object");
+        }
+
+        if (gridTilePrefab == null) {
+            Debug.LogError("_grid Tile prefab not set");
+        }
+        else if (gridTilePrefab.GetComponent<TileController>().IsUnityNull()) {
+            Debug.LogError("provided prefab doesnt have TileController");
+        }
+
+    }
+
     #region GridGeneration
 
-    private TileController InstantiateTile(GameObject tilePrefab , Transform parent , Vector3 pos) {
+    private TileController InstantiateTile(GameObject tilePrefab, Transform parent, Vector3 pos) {
         TileController spawnedTile = PrefabUtility.InstantiatePrefab(tilePrefab, parent)
             .GetComponent<TileController>();
         spawnedTile.transform.SetPositionAndRotation(pos + tilePrefab.transform.position, Quaternion
@@ -201,7 +168,7 @@ public class GridSystem : MonoBehaviour {
     }
 
     private List<GameObject> InstantiateObstacles(List<GameObject> obstaclesPrefab, Transform
-            parent ) {
+        parent) {
         List<GameObject> obstacles = new(obstaclesPrefab.Count);
         foreach (GameObject ob in obstaclesPrefab) {
             var obstacle = (GameObject)PrefabUtility.InstantiatePrefab(ob, parent);
@@ -211,41 +178,58 @@ public class GridSystem : MonoBehaviour {
         return obstacles;
     }
 
+    // Editor only
     public void Generate() {
         Clear();
 
+        // creating tile for the grids
         Debug.Log("Grid creation");
         Vector3 pos = Vector3.zero;
-        pos.y = -1;
         for (int i = 0; i < gridRows; i++) {
             pos.x = i * gridSize;
             for (int j = 0; j < gridCols; j++) {
                 pos.z = j * gridSize;
-                var spawnedTile = InstantiateTile(gridTilePrefab , transform , pos);
-                _grid.Add(new((int)pos.x, (int)pos.z), new TileInfo(spawnedTile));
+                InstantiateTile(gridTilePrefab, transform, pos);
             }
         }
+
+        // syncing the new generate tiles
+        SyncGrid();
     }
 
 
     // Editor only
+    // deletes all the tiles present in the grid
     public void Clear() {
         Debug.Log($"Clearing Grid: count {_grid.Count}");
 
         foreach (var tileInfo in _grid) {
-            ResetTile(tileInfo.Key);
+            ClearTile(tileInfo.Key);
         }
 
-        for (int i = 0 ; i < transform.childCount ; i++) {
-            GameObject child = transform.GetChild(i).gameObject;
-#if UNITY_EDITOR
-            DestroyImmediate(child);
-#else
-            Destroy(child);
-#endif
-        }
         _grid.Clear();
     }
+
+    // editor only
+    // Deletes all the game object present at this grid cell
+    public void ClearTile(Vector2Int cellNo) {
+        _grid.TryGetValue(cellNo, out TileInfo info);
+        if (info == null) {
+            return;
+        }
+
+        if (info.Tile) {
+            DestroyImmediate(info.Tile.gameObject);
+        }
+
+        foreach (GameObject go in info.Obstacles) {
+            DestroyImmediate(go);
+        }
+    }
+
+    #endregion
+
+    #region GridEditorTool
 
     public void LoadGridFromScriptableObject() {
         if (_gridData == null) {
@@ -260,19 +244,22 @@ public class GridSystem : MonoBehaviour {
         var gridData = _gridData.GetGridData();
         Debug.Log("Loaded Grid successfully");
 
-        // replacing the saved data with new instance of the data
+        // creating instance of the saved data
         foreach (var data in gridData) {
-            var pos =   new Vector3(
-                data.position.x * gridSize ,
+            var pos = new Vector3(
+                data.position.x * gridSize,
                 0,
                 data.position.y * gridSize);
 
-            var tile = InstantiateTile(data.tilePrefab , transform, pos);
+            var tile = InstantiateTile(data.tilePrefab, transform, pos);
             List<GameObject> obstacles = InstantiateObstacles(data.obstaclePrefabs,
                 tile.transform);
 
-            _grid[data.position] = new TileInfo(tile, obstacles);
+            // _grid[data.position] = new TileInfo(tile, obstacles);
         }
+
+        // sync the _grid with new data
+        SyncGrid();
     }
 
     public void SaveGridToScriptableObject() {
@@ -292,11 +279,9 @@ public class GridSystem : MonoBehaviour {
         }
     }
 
-    #endregion
 
-    #region GridEditorTool
-
-    public void UpdateGridChanges( Vector2Int cell , Stack<ObstaclesChange> changes) {
+    // Editor only
+    public void UpdateGridChanges(Vector2Int cell, Stack<ObstaclesChange> changes) {
         if (Application.isPlaying) {
             Debug.LogWarning("UpdateGridChanges should'nt be call in playmode");
             return;
@@ -306,30 +291,28 @@ public class GridSystem : MonoBehaviour {
             return;
         }
 
-        // we will go throught the sequence of change and get the last value persistant at the end
-        TileInfo tempInfo = new(info.Tile);
+        // we will go through the sequence of change and get the last value persistant at the end
+        TileInfo newTileInfo = new(info.Tile);
         foreach (ObstaclesChange change in changes) {
             switch (change.op) {
                 case GridOperation.Adding:
-                    tempInfo.Obstacles.Add(change.instance);
+                    newTileInfo.Obstacles.Add(change.instance);
                     break;
                 case GridOperation.Removing:
-                    tempInfo.Obstacles.Remove(change.instance);
-#if UNITY_EDITOR
+                    newTileInfo.Obstacles.Remove(change.instance);
                     DestroyImmediate(change.instance);
-#else
-                    Destroy(change.instance);
-#endif
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        // inserting new fresh data
-        _grid[cell] = tempInfo;
+        // updating cells with new fresh data
+        // not using SyncGrid here because only few grids are affected.
+        _grid[cell] = newTileInfo;
     }
 
-
     #endregion
+
+#endif // unity editor
 }
