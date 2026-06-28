@@ -7,7 +7,7 @@
         <ui:VisualElement name="editingSection" enabled="true" style="flex-grow: 1; visibility: hidden;">
             <ui:EnumField label="Operation Mode" value="Adding" type="GridOperation, Assembly-CSharp" name="operationMode">
                 <Bindings>
-                    <ui:DataBinding property="value" data-source-path="curMode" data-source-type="GridEditorWindow, Assembly-CSharp-Editor" binding-mode="TwoWay"/>
+                    <ui:DataBinding property="value" data-source-path="opMode" data-source-type="GridEditorWindow, Assembly-CSharp-Editor" binding-mode="TwoWay"/>
                 </Bindings>
             </ui:EnumField>
             <ui:Button text="Confirm Placment" name="confirmPlacement" enabled="true"/>

@@ -13,8 +13,7 @@ public class TileInfo {
     public bool isOccupied => Obstacles != null && Obstacles.Count > 0 && Obstacles.Any(val =>
         val.activeInHierarchy && val.CompareTag("Obstacle")) ;
 
-    public Vector2Int cellNo => new(Mathf.FloorToInt(Tile.transform.position.x),
-        Mathf.FloorToInt(Tile.transform.position.z));
+    public Vector2Int cellNo => GridSystem.Instance.CellNumber(Tile.transform.position) ;
 
     public TileInfo(TileController tile) {
         this.Tile = tile;
